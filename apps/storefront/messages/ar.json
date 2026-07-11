@@ -57,6 +57,7 @@
     "newsletterPlaceholder": "بريدك الإلكتروني",
     "newsletterSubmit": "اشتراك",
     "newsletterSuccess": "شكراً! تم تسجيل اشتراكك.",
+    "newsletterError": "تعذر تسجيل الاشتراك. حاول مرة أخرى.",
     "newsletterPrivacy": "لن نشارك بريدك مع أطراف ثالثة.",
     "recommended": "موصى به لك",
     "recommendedSubtitle": "بناءً على اهتماماتك الأخيرة",
@@ -78,6 +79,13 @@
     "description": "الوصف",
     "selectVariant": "اختر الخيار",
     "searchResults": "نتائج البحث عن \"{query}\""
+  },
+  "categories": {
+    "title": "جميع الفئات",
+    "subtitle": "تصفح مجموعاتنا واكتشف منتجات تناسبك",
+    "empty": "لا توجد فئات حالياً",
+    "emptyDesc": "نضيف فئات جديدة قريباً — تصفح المنتجات في الوقت الحالي.",
+    "browseProducts": "تصفح المنتجات"
   },
   "cart": {
     "title": "سلة التسوق",

@@ -400,3 +400,16 @@ export async function getWilayas(locale: string) {
 export async function getCommunes(wilayaCode: string, locale: string) {
   return apiFetch<Commune[]>(`/geo/wilayas/${wilayaCode}/communes?locale=${locale}`);
 }
+
+// Newsletter
+export async function subscribeNewsletter(input: {
+  email: string;
+  locale: string;
+  source?: string;
+}) {
+  return apiFetch<{ subscribed: true; alreadySubscribed: boolean }>('/newsletter/subscribe', {
+    method: 'POST',
+    body: JSON.stringify(input),
+    revalidate: false,
+  });
+}

@@ -2,13 +2,13 @@ import { Inject, Injectable, Logger } from '@nestjs/common';
 import type { OrderStatus } from '@hasan-shop/shared/constants';
 import type { IOrderRepository, OrderRecord } from '../../domain/repositories/order.repository';
 import { ORDER_REPOSITORY } from '../../domain/repositories/tokens';
-import { type FulfillmentService } from '../fulfillment/fulfillment.service';
-import { type InventoryService } from '../inventory/inventory.service';
+import { FulfillmentService } from '../fulfillment/fulfillment.service';
+import { InventoryService } from '../inventory/inventory.service';
 import {
-  type NotificationService,
+  NotificationService,
   type OrderNotificationEvent,
 } from '../notifications/notification.service';
-import { type ShippingService } from '../shipping/shipping.service';
+import { ShippingService } from '../shipping/shipping.service';
 
 @Injectable()
 export class AutomationService {

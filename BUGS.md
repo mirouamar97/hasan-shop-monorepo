@@ -1,6 +1,6 @@
 # HASAN SHOP — Bug Register (M3)
 
-**Last Updated**: 2026-07-10  
+**Last Updated**: 2026-07-11  
 **Severity**: Critical / High / Medium / Low  
 **Status**: Open / Fixed
 
@@ -11,10 +11,10 @@
 | Severity | Open | Fixed |
 |----------|------|-------|
 | Critical | 0 | 0 |
-| High | 0 | 7 |
-| Medium | 0 | 8 |
-| Low | 2 | 5 |
-| **Total** | **2** | **22** |
+| High | 0 | 9 |
+| Medium | 0 | 9 |
+| Low | 2 | 7 |
+| **Total** | **2** | **25** |
 
 ---
 
@@ -150,3 +150,30 @@ Admin mutations in fulfillment, suppliers, inventory, and shipping controllers n
 | Status | Open (by design) |
 
 Checkout uses flat rates; admin quote uses carrier adapters. Prices may differ until unified.
+
+### BUG-034 — API dev startup fails (Nest DI type imports)
+| Field | Value |
+|-------|-------|
+| Severity | High |
+| Component | `ClamAvVirusScanner`, `ShippingService`, `AutomationService` |
+| Status | Fixed |
+
+`import { type ConfigService }` and `import { type XxxService }` erased runtime metadata; Nest could not resolve constructor deps (`Function at index [n]`). Fixed by using value imports for all `@Injectable()` constructor parameters.
+
+### BUG-035 — carrier-adapters package exports raw TypeScript
+| Field | Value |
+|-------|-------|
+| Severity | High |
+| Component | `packages/carrier-adapters/package.json` |
+| Status | Fixed |
+
+`exports` pointed to `./src/*.ts`; Node ESM at API runtime failed with `ERR_MODULE_NOT_FOUND`. Exports now target compiled `dist/*.js`.
+
+### BUG-036 — Newsletter signup UI-only (no persistence)
+| Field | Value |
+|-------|-------|
+| Severity | Medium |
+| Component | `newsletter-signup.tsx`, API |
+| Status | Fixed |
+
+Added `newsletter_subscribers` table (migration `0004`), `POST /api/v1/newsletter/subscribe`, Drizzle repository, and wired storefront form with error handling.

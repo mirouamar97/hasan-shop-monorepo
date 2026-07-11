@@ -214,11 +214,13 @@ export default async function HomePage({
       </section>
 
       <NewsletterSignup
+        locale={locale}
         title={t('home.newsletterTitle')}
         subtitle={t('home.newsletterSubtitle')}
         placeholder={t('home.newsletterPlaceholder')}
         submitLabel={t('home.newsletterSubmit')}
         successMessage={t('home.newsletterSuccess')}
+        errorMessage={t('home.newsletterError')}
         privacyNote={t('home.newsletterPrivacy')}
       />
 

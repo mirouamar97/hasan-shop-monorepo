@@ -11,10 +11,12 @@
 |---------|---------|
 | `pnpm typecheck` (11 حزمة) | ✅ نجح |
 | API lint | ✅ 0 أخطاء |
-| API unit tests | ✅ 236/236 |
+| API unit tests | ✅ 241/241 |
 | Storefront lint + typecheck | ✅ نجح |
 | Storefront build (standalone) | ⚠️ فشل EPERM symlinks على Windows/OneDrive |
 | Docker stack | ❌ Docker Desktop غير شغّال (pipe غير متاح) |
+| API dev (`:4000`) | ✅ يعمل — health يُرجع `database/redis down` بدون Docker |
+| Storefront dev | ✅ `:3003` (أو `:3000` افتراضي `pnpm dev`) |
 | E2E Playwright | ⏸ لم يُشغّل — يتطلب Docker + API + Admin + Storefront |
 | Integration tests | ⏸ يتطلب PostgreSQL + `.env` |
 
@@ -56,7 +58,7 @@
 |-------|--------|
 | مراجعة شاملة + إصلاحات | ✅ هذا التقرير + إصلاحات BUG-031 |
 | حفظ كل شيء (git) | ✅ commit `408c5ba` |
-| تجربة المشروع | ⚠️ جزئي — بيئة Docker/API غير شغّالة الآن |
+| تجربة المشروع | ⚠️ جزئي — API يعمل؛ Docker مطلوب للبيانات وE2E |
 
 ---
 
@@ -88,8 +90,9 @@
 | الإصلاح | الملفات |
 |---------|---------|
 | BUG-031: audit logging لـ inventory + shipping | `inventory.controller.ts`, `shipping.controller.ts` |
+| BUG-034/035: API dev startup | DI type imports + `carrier-adapters` exports |
 | تحديث اختبارات controllers | `*.controller.test.ts` |
-| تحديث `BUGS.md` | BUG-021, 031, 032 → Fixed |
+| تحديث `BUGS.md` | BUG-021, 031, 032, 034, 035 → Fixed |
 
 **سابقاً (جلسات سابقة):**
 - API lint 36→0
@@ -126,13 +129,13 @@
 ### أولوية عالية
 - [ ] تشغيل Docker + `pnpm ci` حتى 14/14 E2E
 - [ ] نقل المشروع خارج OneDrive أو تفعيل symlinks
-- [ ] Variant picker في صفحة المنتج (مذكور في BUGS قديم)
-- [ ] لقطات screenshots جديدة مع API + بيانات seed
+- [x] Variant picker في صفحة المنتج
+- [ ] لقطات screenshots جديدة مع API + بيانات seed (يتطلب Docker)
 
 ### أولوية متوسطة (v1.1.0)
 - [ ] Admin: branding كامل من لوحة التحكم (favicon, OG, social)
-- [ ] Storefront: صفحة categories list منفصلة
-- [ ] Newsletter: ربط API حقيقي (حالياً UI فقط)
+- [x] Storefront: صفحة categories list منفصلة (`/categories`)
+- [x] Newsletter: API + جدول `newsletter_subscribers` + ربط storefront
 - [ ] Lighthouse audit موثّق >95
 
 ### أولوية منخفضة (v1.2.0)
@@ -175,7 +178,7 @@ node capture-homepage-screenshots.mjs
 | **الكود** | جاهز تقنياً — typecheck/lint/tests ✅ |
 | **المنتج (UX)** | homepage تجارة إلكترونية مستعادة ✅ |
 | **RC1** | بانتظار بيئة (Docker, E2E, staging credentials) |
-| **Git** | محفوظ محلياً — commit `408c5ba` + تغييرات جديدة بانتظار commit |
+| **Git** | commit جديد بعد التحقق — newsletter + categories + BUG-034/035 |
 
 **التوصية:** تشغيل Docker Desktop، ثم `pnpm ci` للتحقق النهائي قبل RC1.
 
@@ -185,7 +188,9 @@ node capture-homepage-screenshots.mjs
 
 | الإنجاز | التفاصيل |
 |---------|----------|
-| Git commit | `0fb3b7f` — audit + تقرير |
-| Variant picker | صفحة المنتج — اختيار متغيرات مع مزامنة السلة/checkout |
-| Screenshots | 3 لقطات محدّثة من dev server |
-| Docker | لا يزال غير شغّال — يحتاج تشغيل Docker Desktop يدوياً |
+| Newsletter API | `POST /api/v1/newsletter/subscribe` + migration `0004` + ربط `newsletter-signup.tsx` |
+| Categories page | `/[locale]/categories` — شبكة فئات كاملة مع empty state |
+| BUG-034/035 | إصلاحات Nest DI + carrier-adapters exports (غير مُلتزَم سابقاً) |
+| الاختبارات | typecheck 11/11، API 241/241، storefront lint/typecheck ✅ |
+| Docker | ❌ غير شغّال — db:migrate/seed/E2E معطّلة |
+| المنافذ | API `:4000`، Storefront dev `:3003`، Admin `:3001` |

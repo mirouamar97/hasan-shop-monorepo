@@ -13,6 +13,7 @@ import { CartModule } from './presentation/modules/cart/cart.module';
 import { CheckoutModule } from './presentation/modules/checkout/checkout.module';
 import { OrdersModule } from './presentation/modules/orders/orders.module';
 import { EngagementModule } from './presentation/modules/engagement/engagement.module';
+import { NewsletterModule } from './presentation/modules/newsletter/newsletter.module';
 import { NotificationTemplatesModule } from './presentation/modules/notifications/notification-templates.module';
 import { ShippingModule } from './presentation/modules/shipping/shipping.module';
 import { FulfillmentModule } from './presentation/modules/fulfillment/fulfillment.module';
@@ -50,6 +51,7 @@ import { CsrfGuard } from './infrastructure/security/csrf.guard';
     CheckoutModule,
     OrdersModule,
     EngagementModule,
+    NewsletterModule,
     NotificationTemplatesModule,
     ShippingModule,
     FulfillmentModule,

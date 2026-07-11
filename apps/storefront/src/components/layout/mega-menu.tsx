@@ -53,7 +53,7 @@ export function MegaMenu({ categories }: MegaMenuProps) {
               ))}
             </div>
             <Link
-              href="/products"
+              href="/categories"
               className="mt-4 block text-sm font-medium text-[var(--color-accent)] hover:underline"
             >
               {t('viewAll')}

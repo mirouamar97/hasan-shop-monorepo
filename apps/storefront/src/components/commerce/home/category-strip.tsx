@@ -18,7 +18,7 @@ export function CategoryStrip({ categories, locale, title, viewAll }: CategorySt
           {title}
         </h2>
         <Link
-          href="/products"
+          href="/categories"
           className="inline-flex items-center gap-1 text-sm font-medium text-[var(--color-accent)] hover:underline"
         >
           {viewAll}

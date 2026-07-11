@@ -832,6 +832,20 @@ export const recentlyViewed = pgTable(
   ],
 );
 
+export const newsletterSubscribers = pgTable(
+  'newsletter_subscribers',
+  {
+    id: uuid('id').defaultRandom().primaryKey(),
+    email: varchar('email', { length: 255 }).notNull(),
+    locale: varchar('locale', { length: 5 }).notNull().default('ar'),
+    source: varchar('source', { length: 50 }).notNull().default('homepage'),
+    isActive: boolean('is_active').notNull().default(true),
+    subscribedAt: timestamp('subscribed_at', { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => [uniqueIndex('newsletter_subscribers_email_idx').on(table.email)],
+);
+
 export const notificationTemplates = pgTable('notification_templates', {
   id: uuid('id').defaultRandom().primaryKey(),
   slug: varchar('slug', { length: 80 }).notNull().unique(),

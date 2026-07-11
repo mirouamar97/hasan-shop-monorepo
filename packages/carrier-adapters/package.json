@@ -4,9 +4,17 @@
   "private": true,
   "license": "UNLICENSED",
   "exports": {
-    ".": "./src/index.ts",
-    "./yalidine": "./src/yalidine/index.ts"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./yalidine": {
+      "types": "./dist/yalidine/index.d.ts",
+      "default": "./dist/yalidine/index.js"
+    }
   },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsc",
     "typecheck": "tsc --noEmit",

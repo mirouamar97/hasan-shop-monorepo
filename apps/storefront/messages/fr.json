@@ -57,6 +57,7 @@
     "newsletterPlaceholder": "Votre e-mail",
     "newsletterSubmit": "S'inscrire",
     "newsletterSuccess": "Merci ! Inscription enregistrée.",
+    "newsletterError": "Impossible de s'inscrire. Réessayez.",
     "newsletterPrivacy": "Nous ne partageons pas votre e-mail.",
     "recommended": "Recommandé pour vous",
     "recommendedSubtitle": "Basé sur vos intérêts récents",
@@ -78,6 +79,13 @@
     "description": "Description",
     "selectVariant": "Choisir une option",
     "searchResults": "Résultats pour \"{query}\""
+  },
+  "categories": {
+    "title": "Toutes les catégories",
+    "subtitle": "Parcourez nos collections et trouvez ce qui vous convient",
+    "empty": "Aucune catégorie pour le moment",
+    "emptyDesc": "De nouvelles catégories arrivent bientôt — explorez nos produits en attendant.",
+    "browseProducts": "Voir les produits"
   },
   "cart": {
     "title": "Mon panier",

@@ -11,6 +11,7 @@ import {
   GEO_REPOSITORY,
   HEALTH_REPOSITORY,
   INVENTORY_REPOSITORY,
+  NEWSLETTER_REPOSITORY,
   NOTIFICATION_REPOSITORY,
   ORDER_REPOSITORY,
   PRODUCT_REPOSITORY,
@@ -45,6 +46,7 @@ import { DrizzleShippingRepository } from './drizzle/drizzle-shipping.repository
 import { DrizzleSupplierRepository } from './drizzle/drizzle-supplier.repository';
 import { DrizzleUserRepository } from './drizzle/drizzle-user.repository';
 import { DrizzleWishlistRepository } from './drizzle/drizzle-wishlist.repository';
+import { DrizzleNewsletterRepository } from './drizzle/drizzle-newsletter.repository';
 
 @Global()
 @Module({
@@ -71,6 +73,7 @@ import { DrizzleWishlistRepository } from './drizzle/drizzle-wishlist.repository
     { provide: SUPPLIER_REPOSITORY, useClass: DrizzleSupplierRepository },
     { provide: ANALYTICS_REPOSITORY, useClass: DrizzleAnalyticsRepository },
     { provide: CUSTOMER_CRM_REPOSITORY, useClass: DrizzleCustomerCrmRepository },
+    { provide: NEWSLETTER_REPOSITORY, useClass: DrizzleNewsletterRepository },
   ],
   exports: [
     USER_REPOSITORY,
@@ -95,6 +98,7 @@ import { DrizzleWishlistRepository } from './drizzle/drizzle-wishlist.repository
     SUPPLIER_REPOSITORY,
     ANALYTICS_REPOSITORY,
     CUSTOMER_CRM_REPOSITORY,
+    NEWSLETTER_REPOSITORY,
   ],
 })
 export class RepositoriesModule {}

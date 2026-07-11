@@ -15,7 +15,7 @@ import type {
 } from '../../domain/repositories/shipment.repository';
 import { ORDER_REPOSITORY, SHIPMENT_REPOSITORY } from '../../domain/repositories/tokens';
 import { WebhookSecurityService } from '../../infrastructure/security/webhook-security.service';
-import { type CarrierRegistryService } from './carrier-registry.service';
+import { CarrierRegistryService } from './carrier-registry.service';
 
 export interface CreateShipmentOptions {
   carrier?: CarrierSlug;
