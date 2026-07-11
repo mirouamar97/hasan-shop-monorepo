@@ -76,6 +76,7 @@
     "fbtSubtitle": "عملاء آخرون أضافوا هذه المنتجات معاً",
     "recentlyViewed": "شاهدت مؤخراً",
     "description": "الوصف",
+    "selectVariant": "اختر الخيار",
     "searchResults": "نتائج البحث عن \"{query}\""
   },
   "cart": {

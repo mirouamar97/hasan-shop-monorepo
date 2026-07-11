@@ -178,3 +178,14 @@ node capture-homepage-screenshots.mjs
 | **Git** | محفوظ محلياً — commit `408c5ba` + تغييرات جديدة بانتظار commit |
 
 **التوصية:** تشغيل Docker Desktop، ثم `pnpm ci` للتحقق النهائي قبل RC1.
+
+---
+
+## 10. تحديث الجلسة الحالية (2026-07-11)
+
+| الإنجاز | التفاصيل |
+|---------|----------|
+| Git commit | `0fb3b7f` — audit + تقرير |
+| Variant picker | صفحة المنتج — اختيار متغيرات مع مزامنة السلة/checkout |
+| Screenshots | 3 لقطات محدّثة من dev server |
+| Docker | لا يزال غير شغّال — يحتاج تشغيل Docker Desktop يدوياً |

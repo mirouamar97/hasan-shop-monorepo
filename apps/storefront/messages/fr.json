@@ -76,6 +76,7 @@
     "fbtSubtitle": "D'autres clients ont ajouté ces produits ensemble",
     "recentlyViewed": "Récemment consultés",
     "description": "Description",
+    "selectVariant": "Choisir une option",
     "searchResults": "Résultats pour \"{query}\""
   },
   "cart": {
