@@ -1,0 +1,191 @@
+{
+  "common": {
+    "storeName": "HASAN SHOP",
+    "currency": "DA",
+    "loading": "Chargement...",
+    "error": "Une erreur est survenue",
+    "retry": "Réessayer"
+  },
+  "nav": {
+    "home": "Accueil",
+    "products": "Produits",
+    "categories": "Catégories",
+    "cart": "Panier",
+    "favorites": "Favoris",
+    "account": "Mon compte",
+    "trackOrder": "Suivre ma commande",
+    "viewAll": "Tout voir",
+    "main": "Navigation principale",
+    "menu": "Ouvrir le menu",
+    "close": "Fermer",
+    "theme": "Changer le thème"
+  },
+  "search": {
+    "label": "Recherche",
+    "placeholder": "Rechercher des produits...",
+    "close": "Fermer la recherche"
+  },
+  "home": {
+    "badge": "Boutique high-tech en Algérie",
+    "hero": "Électronique premium aux meilleurs prix",
+    "subtitle": "Des milliers de produits — livraison dans toutes les wilayas — paiement à la livraison",
+    "shopNow": "Découvrir la collection",
+    "featuredProducts": "Produits vedettes",
+    "featuredSubtitle": "Nos sélections les plus demandées cette saison",
+    "categories": "Acheter par catégorie",
+    "categoriesSubtitle": "Explorez nos collections soignées",
+    "flashSale": "Offres limitées",
+    "flashSaleSubtitle": "Prix exceptionnels pour une durée limitée",
+    "sale": "Promo",
+    "spotlight": "Offre du jour",
+    "bestSellers": "Meilleures ventes",
+    "bestSellersSubtitle": "Les produits les plus demandés",
+    "newArrivals": "Nouveautés",
+    "newArrivalsSubtitle": "Derniers produits ajoutés",
+    "brands": "Acheter par marque",
+    "promotions": "Promotions",
+    "promoCodTitle": "Paiement à la livraison",
+    "promoCodDesc": "Payez en toute sécurité à la réception",
+    "promoSaleTitle": "Promos de la semaine",
+    "promoSaleDesc": "Prix réduits sur une sélection",
+    "promoNewTitle": "Nouveaux produits",
+    "promoNewDesc": "Découvrez les dernières arrivées",
+    "flashSaleEmpty": "Pas de flash sale pour le moment — parcourez le catalogue",
+    "sectionEmpty": "Aucun produit dans cette section — voir le catalogue",
+    "newsletterTitle": "Newsletter",
+    "newsletterSubtitle": "Offres exclusives et accès anticipé aux nouveautés",
+    "newsletterPlaceholder": "Votre e-mail",
+    "newsletterSubmit": "S'inscrire",
+    "newsletterSuccess": "Merci ! Inscription enregistrée.",
+    "newsletterPrivacy": "Nous ne partageons pas votre e-mail.",
+    "recommended": "Recommandé pour vous",
+    "recommendedSubtitle": "Basé sur vos intérêts récents",
+    "browseCatalog": "Parcourir le catalogue",
+    "browseCatalogSubtitle": "Tous les produits disponibles en boutique"
+  },
+  "products": {
+    "empty": "Aucun produit pour le moment",
+    "emptyDesc": "Essayez une autre catégorie ou revenez plus tard.",
+    "results": "résultats",
+    "inStock": "En stock",
+    "outOfStock": "Rupture de stock",
+    "addToCart": "Ajouter au panier",
+    "buyNow": "Acheter maintenant",
+    "related": "Produits similaires",
+    "fbt": "Fréquemment achetés ensemble",
+    "fbtSubtitle": "D'autres clients ont ajouté ces produits ensemble",
+    "recentlyViewed": "Récemment consultés",
+    "description": "Description",
+    "searchResults": "Résultats pour \"{query}\""
+  },
+  "cart": {
+    "title": "Mon panier",
+    "empty": "Votre panier est vide",
+    "emptyDesc": "Ajoutez des produits de notre collection premium.",
+    "continueShopping": "Continuer mes achats",
+    "remove": "Supprimer",
+    "increaseQuantity": "Augmenter la quantité",
+    "decreaseQuantity": "Diminuer la quantité",
+    "clear": "Vider le panier",
+    "summary": "Récapitulatif",
+    "items": "{count, plural, =0 {Aucun article} one {1 article} other {# articles}}",
+    "subtotal": "Sous-total",
+    "checkout": "Passer commande"
+  },
+  "checkout": {
+    "title": "Passer commande",
+    "buyNowTitle": "Achat rapide",
+    "contactInfo": "Coordonnées",
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "phone": "Téléphone",
+    "shippingAddress": "Adresse de livraison",
+    "wilaya": "Wilaya",
+    "selectWilaya": "Choisir une wilaya",
+    "commune": "Commune",
+    "selectCommune": "Choisir une commune",
+    "address": "Adresse",
+    "landmark": "Point de repère (optionnel)",
+    "deliveryType": "Mode de livraison",
+    "homeDelivery": "Livraison à domicile",
+    "stopDesk": "Stop Desk (point relais)",
+    "notes": "Notes (optionnel)",
+    "orderSummary": "Récapitulatif",
+    "shipping": "Livraison",
+    "freeShipping": "Gratuit",
+    "total": "Total",
+    "codNote": "Paiement à la livraison — sûr et garanti",
+    "placeOrder": "Confirmer la commande",
+    "successTitle": "Commande confirmée !",
+    "successMessage": "Merci pour votre confiance. Nous vous contacterons bientôt pour confirmer la livraison.",
+    "orderNumber": "Numéro de commande",
+    "trackOrder": "Suivre ma commande"
+  },
+  "track": {
+    "title": "Suivre ma commande",
+    "subtitle": "Entrez votre numéro de commande et le téléphone utilisé lors de l'achat",
+    "orderNumber": "Numéro de commande",
+    "phone": "Téléphone",
+    "submit": "Rechercher",
+    "notFound": "Commande introuvable",
+    "timeline": "Historique",
+    "items": "Articles",
+    "estimatedDelivery": "Livraison estimée"
+  },
+  "favorites": {
+    "title": "Mes favoris",
+    "empty": "Aucun produit dans vos favoris",
+    "emptyDesc": "Enregistrez les produits que vous aimez pour y revenir plus tard.",
+    "add": "Ajouter aux favoris",
+    "remove": "Retirer des favoris"
+  },
+  "trust": {
+    "whatsapp": "Contacter sur WhatsApp",
+    "authentic": {
+      "title": "Produits authentiques",
+      "desc": "100% originaux et garantis"
+    },
+    "shipping": {
+      "title": "Livraison rapide",
+      "desc": "Toutes les wilayas"
+    },
+    "returns": {
+      "title": "Retours faciles",
+      "desc": "Sous 7 jours"
+    },
+    "warranty": {
+      "title": "Garantie qualité",
+      "desc": "Sur tous les produits"
+    },
+    "support": {
+      "title": "Support 7j/7",
+      "desc": "Équipe dédiée"
+    }
+  },
+  "reviews": {
+    "title": "Des milliers de clients nous font confiance",
+    "subtitle": "Expériences réelles de nos clients en Algérie",
+    "sample1": "Expérience d'achat raffinée et livraison rapide. Produit conforme à la description.",
+    "sample2": "Excellent service et le paiement à la livraison me rassure. Je recommande.",
+    "sample3": "Site élégant et facile à utiliser. Ma commande est arrivée à temps."
+  },
+  "footer": {
+    "tagline": "Votre destination premium pour le e-commerce en Algérie — qualité, confiance et élégance.",
+    "shop": "Boutique",
+    "support": "Aide",
+    "legal": "Légal",
+    "shipping": "Livraison",
+    "returns": "Politique de retour",
+    "warranty": "Garantie",
+    "cod": "Paiement à la livraison disponible",
+    "rights": "Tous droits réservés",
+    "contact": "Contactez-nous",
+    "privacy": "Politique de confidentialité",
+    "terms": "Conditions générales"
+  },
+  "errors": {
+    "notFoundTitle": "Page introuvable",
+    "notFoundDesc": "La page que vous recherchez n'existe pas ou a été déplacée.",
+    "goHome": "Retour à l'accueil"
+  }
+}

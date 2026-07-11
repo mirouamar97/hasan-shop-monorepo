@@ -1,0 +1,29 @@
+{
+  "name": "@hasan-shop/carrier-adapters",
+  "version": "0.1.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "exports": {
+    ".": "./src/index.ts",
+    "./yalidine": "./src/yalidine/index.ts"
+  },
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src/",
+    "test": "vitest run",
+    "test:ci": "vitest run --coverage"
+  },
+  "dependencies": {
+    "@hasan-shop/logger": "workspace:*",
+    "@hasan-shop/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "@hasan-shop/config-eslint": "workspace:*",
+    "@hasan-shop/config-typescript": "workspace:*",
+    "@vitest/coverage-v8": "^3.2.1",
+    "eslint": "^9.28.0",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.1"
+  }
+}

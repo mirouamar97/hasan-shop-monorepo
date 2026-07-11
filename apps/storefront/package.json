@@ -1,0 +1,36 @@
+{
+  "name": "@hasan-shop/storefront",
+  "version": "0.1.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "scripts": {
+    "dev": "next dev --port 3000",
+    "build": "next build",
+    "start": "node .next/standalone/apps/storefront/server.js",
+    "start:next": "next start --port 3000",
+    "lint": "eslint src/",
+    "typecheck": "tsc --noEmit",
+    "clean": "rimraf .next"
+  },
+  "dependencies": {
+    "@hasan-shop/shared": "workspace:*",
+    "lucide-react": "^1.24.0",
+    "next": "^15.3.3",
+    "next-intl": "^4.1.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "zustand": "^5.0.5"
+  },
+  "devDependencies": {
+    "@hasan-shop/config-eslint": "workspace:*",
+    "@hasan-shop/config-typescript": "workspace:*",
+    "@tailwindcss/postcss": "^4.1.8",
+    "@types/node": "^22.15.29",
+    "@types/react": "^19.1.6",
+    "@types/react-dom": "^19.1.5",
+    "eslint": "^9.28.0",
+    "rimraf": "^6.0.1",
+    "tailwindcss": "^4.1.8",
+    "typescript": "^5.8.3"
+  }
+}

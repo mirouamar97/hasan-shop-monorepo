@@ -1,0 +1,7 @@
+{
+  "name": "@hasan-shop/config-typescript",
+  "version": "0.1.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "files": ["base.json", "nextjs.json", "nestjs.json", "library.json"]
+}

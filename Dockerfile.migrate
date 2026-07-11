@@ -1,0 +1,22 @@
+# Database migrations — one-shot container
+FROM node:20-alpine AS base
+RUN apk add --no-cache libc6-compat
+RUN corepack enable && corepack prepare pnpm@9.15.4 --activate
+WORKDIR /app
+
+COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
+COPY packages/database/package.json packages/database/
+COPY packages/shared/package.json packages/shared/
+COPY packages/config-typescript/package.json packages/config-typescript/
+COPY packages/config-eslint/package.json packages/config-eslint/
+
+RUN pnpm install --frozen-lockfile --filter @hasan-shop/database...
+
+COPY packages/database packages/database
+COPY packages/shared packages/shared
+COPY packages/config-typescript packages/config-typescript
+
+RUN pnpm --filter @hasan-shop/shared build \
+  && pnpm --filter @hasan-shop/database build
+
+CMD ["pnpm", "--filter", "@hasan-shop/database", "migrate"]

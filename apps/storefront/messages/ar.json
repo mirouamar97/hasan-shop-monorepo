@@ -1,0 +1,191 @@
+{
+  "common": {
+    "storeName": "HASAN SHOP",
+    "currency": "د.ج",
+    "loading": "جاري التحميل...",
+    "error": "حدث خطأ",
+    "retry": "إعادة المحاولة"
+  },
+  "nav": {
+    "home": "الرئيسية",
+    "products": "المنتجات",
+    "categories": "الفئات",
+    "cart": "السلة",
+    "favorites": "المفضلة",
+    "account": "حسابي",
+    "trackOrder": "تتبع الطلب",
+    "viewAll": "عرض الكل",
+    "main": "التنقل الرئيسي",
+    "menu": "فتح القائمة",
+    "close": "إغلاق",
+    "theme": "تبديل الوضع الليلي"
+  },
+  "search": {
+    "label": "بحث",
+    "placeholder": "ابحث عن منتجات...",
+    "close": "إغلاق البحث"
+  },
+  "home": {
+    "badge": "متجر إلكترونيات في الجزائر",
+    "hero": "إلكترونيات مميزة بأفضل الأسعار",
+    "subtitle": "آلاف المنتجات — توصيل سريع لجميع الولايات — الدفع عند الاستلام",
+    "shopNow": "اكتشف المجموعة",
+    "featuredProducts": "منتجات مميزة",
+    "featuredSubtitle": "اختياراتنا الأكثر طلباً هذا الموسم",
+    "categories": "تسوق حسب الفئة",
+    "categoriesSubtitle": "استكشف مجموعاتنا المنسقة",
+    "flashSale": "عروض محدودة",
+    "flashSaleSubtitle": "أسعار استثنائية لفترة محدودة",
+    "sale": "تخفيض",
+    "spotlight": "عرض اليوم",
+    "bestSellers": "الأكثر مبيعاً",
+    "bestSellersSubtitle": "المنتجات الأكثر طلباً من عملائنا",
+    "newArrivals": "وصل حديثاً",
+    "newArrivalsSubtitle": "أحدث المنتجات في المتجر",
+    "brands": "تسوق حسب العلامة",
+    "promotions": "عروض وترويجات",
+    "promoCodTitle": "الدفع عند الاستلام",
+    "promoCodDesc": "ادفع بأمان عند استلام طلبك",
+    "promoSaleTitle": "تخفيضات الأسبوع",
+    "promoSaleDesc": "أسعار مخفضة على منتجات مختارة",
+    "promoNewTitle": "منتجات جديدة",
+    "promoNewDesc": "اكتشف آخر الإضافات للمتجر",
+    "flashSaleEmpty": "لا توجد عروض flash حالياً — تصفح كل المنتجات",
+    "sectionEmpty": "لا توجد منتجات في هذا القسم بعد — تصفح الكتالوج الكامل",
+    "newsletterTitle": "اشترك في نشرتنا",
+    "newsletterSubtitle": "عروض حصرية ووصول مبكر للمنتجات الجديدة",
+    "newsletterPlaceholder": "بريدك الإلكتروني",
+    "newsletterSubmit": "اشتراك",
+    "newsletterSuccess": "شكراً! تم تسجيل اشتراكك.",
+    "newsletterPrivacy": "لن نشارك بريدك مع أطراف ثالثة.",
+    "recommended": "موصى به لك",
+    "recommendedSubtitle": "بناءً على اهتماماتك الأخيرة",
+    "browseCatalog": "تصفح الكتالوج",
+    "browseCatalogSubtitle": "جميع المنتجات المتاحة في المتجر"
+  },
+  "products": {
+    "empty": "لا توجد منتجات حالياً",
+    "emptyDesc": "جرّب فئة أخرى أو عد لاحقاً — نضيف منتجات جديدة باستمرار.",
+    "results": "نتيجة",
+    "inStock": "متوفر",
+    "outOfStock": "غير متوفر",
+    "addToCart": "أضف إلى السلة",
+    "buyNow": "اشتري الآن",
+    "related": "منتجات ذات صلة",
+    "fbt": "يُشترى معاً عادةً",
+    "fbtSubtitle": "عملاء آخرون أضافوا هذه المنتجات معاً",
+    "recentlyViewed": "شاهدت مؤخراً",
+    "description": "الوصف",
+    "searchResults": "نتائج البحث عن \"{query}\""
+  },
+  "cart": {
+    "title": "سلة التسوق",
+    "empty": "سلتك فارغة",
+    "emptyDesc": "أضف منتجات من مجموعتنا المميزة وابدأ التسوق.",
+    "continueShopping": "متابعة التسوق",
+    "remove": "إزالة",
+    "increaseQuantity": "زيادة الكمية",
+    "decreaseQuantity": "تقليل الكمية",
+    "clear": "إفراغ السلة",
+    "summary": "ملخص الطلب",
+    "items": "{count, plural, =0 {لا توجد منتجات} one {منتج واحد} other {# منتجات}}",
+    "subtotal": "المجموع الفرعي",
+    "checkout": "إتمام الطلب"
+  },
+  "checkout": {
+    "title": "إتمام الطلب",
+    "buyNowTitle": "شراء سريع",
+    "contactInfo": "معلومات الاتصال",
+    "firstName": "الاسم",
+    "lastName": "اللقب",
+    "phone": "رقم الهاتف",
+    "shippingAddress": "عنوان التوصيل",
+    "wilaya": "الولاية",
+    "selectWilaya": "اختر الولاية",
+    "commune": "البلدية",
+    "selectCommune": "اختر البلدية",
+    "address": "العنوان",
+    "landmark": "علامة مميزة (اختياري)",
+    "deliveryType": "نوع التوصيل",
+    "homeDelivery": "توصيل للمنزل",
+    "stopDesk": "مكتب التوقف (Stop Desk)",
+    "notes": "ملاحظات (اختياري)",
+    "orderSummary": "ملخص الطلب",
+    "shipping": "التوصيل",
+    "freeShipping": "مجاني",
+    "total": "المجموع",
+    "codNote": "الدفع عند الاستلام — آمن ومضمون",
+    "placeOrder": "تأكيد الطلب",
+    "successTitle": "تم تأكيد طلبك!",
+    "successMessage": "شكراً لثقتك. سنتواصل معك قريباً لتأكيد التوصيل.",
+    "orderNumber": "رقم الطلب",
+    "trackOrder": "تتبع الطلب"
+  },
+  "track": {
+    "title": "تتبع الطلب",
+    "subtitle": "أدخل رقم الطلب ورقم الهاتف المستخدم عند الشراء",
+    "orderNumber": "رقم الطلب",
+    "phone": "رقم الهاتف",
+    "submit": "تتبع",
+    "notFound": "لم يتم العثور على الطلب",
+    "timeline": "سير الطلب",
+    "items": "المنتجات",
+    "estimatedDelivery": "التوصيل المتوقع"
+  },
+  "favorites": {
+    "title": "المفضلة",
+    "empty": "لا توجد منتجات في المفضلة",
+    "emptyDesc": "احفظ المنتجات التي تعجبك للعودة إليها لاحقاً.",
+    "add": "إضافة إلى المفضلة",
+    "remove": "إزالة من المفضلة"
+  },
+  "trust": {
+    "whatsapp": "تواصل عبر واتساب",
+    "authentic": {
+      "title": "منتجات أصلية",
+      "desc": "100% أصلية ومضمونة"
+    },
+    "shipping": {
+      "title": "توصيل سريع",
+      "desc": "لجميع الولايات"
+    },
+    "returns": {
+      "title": "إرجاع سهل",
+      "desc": "خلال 7 أيام"
+    },
+    "warranty": {
+      "title": "ضمان الجودة",
+      "desc": "على جميع المنتجات"
+    },
+    "support": {
+      "title": "دعم 7/7",
+      "desc": "فريق متخصص"
+    }
+  },
+  "reviews": {
+    "title": "يثق بنا آلاف العملاء",
+    "subtitle": "تجارب حقيقية من عملائنا في الجزائر",
+    "sample1": "تجربة تسوق راقية وتوصيل سريع. المنتج مطابق تماماً للوصف.",
+    "sample2": "خدمة ممتازة والدفع عند الاستلام يطمئنني. أنصح بشدة.",
+    "sample3": "موقع أنيق وسهل الاستخدام. طلبي وصل في الوقت المحدد."
+  },
+  "footer": {
+    "tagline": "وجهتك المميزة للتسوق الإلكتروني في الجزائر — جودة، ثقة، وأناقة.",
+    "shop": "المتجر",
+    "support": "المساعدة",
+    "legal": "قانوني",
+    "shipping": "التوصيل",
+    "returns": "سياسة الإرجاع",
+    "warranty": "الضمان",
+    "cod": "الدفع عند الاستلام متاح",
+    "rights": "جميع الحقوق محفوظة",
+    "contact": "اتصل بنا",
+    "privacy": "سياسة الخصوصية",
+    "terms": "الشروط والأحكام"
+  },
+  "errors": {
+    "notFoundTitle": "الصفحة غير موجودة",
+    "notFoundDesc": "الصفحة التي تبحث عنها غير متوفرة أو تم نقلها.",
+    "goHome": "العودة للرئيسية"
+  }
+}

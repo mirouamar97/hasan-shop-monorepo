@@ -1,0 +1,9 @@
+{
+  "extends": "@hasan-shop/config-typescript/library.json",
+  "compilerOptions": {
+    "lib": ["ES2022", "DOM"],
+    "rootDir": "src",
+    "outDir": "dist"
+  },
+  "include": ["src/**/*"]
+}

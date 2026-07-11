@@ -1,0 +1,54 @@
+{
+  "name": "@hasan-shop/database",
+  "version": "0.1.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./schema": {
+      "types": "./dist/schema/index.d.ts",
+      "import": "./dist/schema/index.js",
+      "require": "./dist/schema/index.js",
+      "default": "./dist/schema/index.js"
+    },
+    "./client": {
+      "types": "./dist/client.d.ts",
+      "import": "./dist/client.js",
+      "require": "./dist/client.js",
+      "default": "./dist/client.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src/",
+    "generate": "drizzle-kit generate",
+    "migrate": "tsx src/migrate.ts",
+    "seed": "tsx src/seed.ts",
+    "seed:geo": "tsx src/seed-geo.ts",
+    "studio": "drizzle-kit studio",
+    "test": "vitest run --passWithNoTests",
+    "test:ci": "vitest run --passWithNoTests"
+  },
+  "dependencies": {
+    "@hasan-shop/shared": "workspace:*",
+    "drizzle-orm": "^0.45.2",
+    "postgres": "^3.4.7"
+  },
+  "devDependencies": {
+    "@hasan-shop/config-eslint": "workspace:*",
+    "@hasan-shop/config-typescript": "workspace:*",
+    "@types/bcrypt": "^5.0.2",
+    "bcrypt": "^6.0.0",
+    "drizzle-kit": "^0.31.10",
+    "eslint": "^9.28.0",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.1"
+  }
+}

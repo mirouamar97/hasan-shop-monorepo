@@ -1,0 +1,41 @@
+# HASAN SHOP Storefront — multi-stage production build
+FROM node:20-alpine AS base
+RUN apk add --no-cache libc6-compat
+RUN corepack enable && corepack prepare pnpm@9.15.4 --activate
+WORKDIR /app
+
+FROM base AS deps
+COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
+COPY apps/storefront/package.json apps/storefront/
+COPY packages/shared/package.json packages/shared/
+COPY packages/config-eslint/package.json packages/config-eslint/
+COPY packages/config-typescript/package.json packages/config-typescript/
+RUN pnpm install --frozen-lockfile --filter @hasan-shop/storefront...
+
+FROM base AS builder
+ARG NEXT_PUBLIC_API_URL=http://localhost:4000
+ARG NEXT_PUBLIC_APP_URL=http://localhost:3000
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_APP_URL=$NEXT_PUBLIC_APP_URL
+COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/apps/storefront/node_modules ./apps/storefront/node_modules
+COPY --from=deps /app/packages ./packages
+COPY . .
+RUN pnpm --filter @hasan-shop/shared build \
+  && pnpm --filter @hasan-shop/storefront build
+
+FROM node:20-alpine AS runner
+RUN apk add --no-cache libc6-compat curl
+WORKDIR /app
+ENV NODE_ENV=production
+RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nextjs
+COPY --from=builder /app/apps/storefront/public ./apps/storefront/public
+COPY --from=builder --chown=nextjs:nodejs /app/apps/storefront/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/apps/storefront/.next/static ./apps/storefront/.next/static
+USER nextjs
+EXPOSE 3000
+ENV PORT=3000
+ENV HOSTNAME=0.0.0.0
+HEALTHCHECK --interval=15s --timeout=5s --start-period=45s --retries=5 \
+  CMD curl -sf http://localhost:3000/ar || exit 1
+CMD ["node", "apps/storefront/server.js"]

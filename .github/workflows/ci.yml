@@ -1,0 +1,131 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master, develop]
+  pull_request:
+    branches: [main, master, develop]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CI: true
+  NODE_ENV: test
+  DATABASE_URL: postgresql://hasan_shop:hasan_shop_dev@localhost:5433/hasan_shop
+  REDIS_URL: redis://localhost:6379
+  MEILISEARCH_HOST: http://localhost:7700
+  MEILISEARCH_API_KEY: hasan_shop_meili_dev_key
+  AUTH_SECRET: ci-github-actions-auth-secret-32chars-min
+  SEED_ADMIN_PASSWORD: DevOnly@HasanShop2026!Secure
+  ADMIN_EMAIL: admin@hasan-shop.dz
+  ADMIN_PASSWORD: DevOnly@HasanShop2026!Secure
+  NEXT_PUBLIC_API_URL: http://localhost:4000
+  CI_LOG_DIR: ${{ github.workspace }}/ci-logs
+
+jobs:
+  ci:
+    name: Full Stack CI
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Build all packages
+        run: pnpm build
+        env:
+          NEXT_PUBLIC_API_URL: http://localhost:4000
+
+      - name: Create environment file
+        run: cp .env.example .env
+
+      - name: Start Docker services
+        run: docker compose up -d --wait --wait-timeout 180 postgres redis meilisearch minio
+
+      - name: Verify Docker health
+        run: bash scripts/ci/verify-docker-health.sh
+
+      - name: Run database migrations
+        run: pnpm db:migrate
+
+      - name: Seed database
+        run: pnpm db:seed
+
+      - name: Start API, Admin, Storefront
+        run: bash scripts/ci/start-apps.sh
+
+      - name: Wait for application health endpoints
+        run: bash scripts/ci/wait-for-apps.sh
+
+      - name: Dependency audit
+        run: pnpm audit --audit-level=high
+
+      - name: Unit tests and coverage
+        run: pnpm test:coverage
+
+      - name: API integration tests
+        run: VITEST_INTEGRATION=true pnpm test:integration
+        env:
+          VITEST_INTEGRATION: true
+
+      - name: Install Playwright browsers
+        run: pnpm --filter @hasan-shop/e2e exec playwright install --with-deps chromium
+
+      - name: Playwright E2E suite
+        run: pnpm test:e2e:ci
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: |
+            apps/api/coverage/
+            packages/shared/coverage/
+            packages/carrier-adapters/coverage/
+          retention-days: 14
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            e2e/playwright-report/
+            e2e/test-results/
+          retention-days: 14
+
+      - name: Upload application logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-logs
+          path: ci-logs/
+          retention-days: 7
+
+      - name: Stop CI stack
+        if: always()
+        run: bash scripts/ci/stop-ci.sh

@@ -1,0 +1,51 @@
+{
+  "name": "hasan-shop",
+  "version": "0.1.0",
+  "private": true,
+  "description": "HASAN SHOP — Production dropshipping platform for Algeria",
+  "packageManager": "pnpm@9.15.4",
+  "pnpm": {
+    "overrides": {
+      "postcss": ">=8.5.10",
+      "drizzle-orm": ">=0.45.2",
+      "esbuild": ">=0.25.0"
+    }
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "test:ci": "turbo run test:ci",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "db:generate": "pnpm --filter @hasan-shop/database generate",
+    "db:migrate": "pnpm --filter @hasan-shop/database migrate",
+    "db:seed": "pnpm --filter @hasan-shop/database seed",
+    "db:studio": "pnpm --filter @hasan-shop/database studio",
+    "verify:stack": "powershell -ExecutionPolicy Bypass -File scripts/verify-stack.ps1",
+    "test:e2e": "pnpm --filter @hasan-shop/e2e test",
+    "test:e2e:ci": "pnpm --filter @hasan-shop/e2e test:ci",
+    "test:coverage": "turbo run test:ci --filter=!@hasan-shop/e2e",
+    "test:integration": "pnpm --filter @hasan-shop/api test:integration",
+    "ci": "node scripts/ci/run-ci.mjs",
+    "ci:bash": "bash scripts/ci/run-ci.sh",
+    "ci:ps1": "powershell -ExecutionPolicy Bypass -File scripts/ci/run-ci.ps1",
+    "deploy": "bash scripts/deploy/deploy.sh",
+    "deploy:validate": "bash scripts/deploy/validate-deployment.sh",
+    "clean": "turbo run clean && rimraf node_modules"
+  },
+  "devDependencies": {
+    "@hasan-shop/config-eslint": "workspace:*",
+    "@hasan-shop/config-typescript": "workspace:*",
+    "prettier": "^3.5.3",
+    "prettier-plugin-tailwindcss": "^0.6.11",
+    "rimraf": "^6.0.1",
+    "turbo": "^2.5.4"
+  }
+}
