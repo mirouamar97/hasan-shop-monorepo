@@ -23,8 +23,12 @@ import { CARRIER_SLUGS, DELIVERY_TYPES } from '@hasan-shop/shared/constants';
 import type { CarrierSlug } from '@hasan-shop/shared/constants';
 import { ShippingService } from '../../../application/shipping/shipping.service';
 import { CarrierRegistryService } from '../../../application/shipping/carrier-registry.service';
+import { AuditService } from '../../../application/audit/audit.service';
 import { AuthGuard } from '../../guards/auth.guard';
 import { RequirePermissions } from '../../decorators/permissions.decorator';
+import { CurrentUser } from '../../decorators/current-user.decorator';
+import { buildAuditContext } from '../../helpers/audit-context';
+import type { AuthUser } from '../../../application/auth/auth.service';
 import { SkipCsrf } from '../../decorators/skip-csrf.decorator';
 
 class ShippingQuoteQuery {
@@ -77,6 +81,7 @@ export class AdminShippingController {
   constructor(
     @Inject(ShippingService) private readonly shippingService: ShippingService,
     @Inject(CarrierRegistryService) private readonly carrierRegistry: CarrierRegistryService,
+    @Inject(AuditService) private readonly auditService: AuditService,
   ) {}
 
   @Get('quote')
@@ -91,8 +96,13 @@ export class AdminShippingController {
   async createShipment(
     @Param('orderId') orderId: string,
     @Body() dto: CreateShipmentDto,
+    @Req() req: Request,
+    @CurrentUser() user: AuthUser,
   ) {
     const data = await this.shippingService.createShipmentForOrder(orderId, dto);
+    await this.auditService.log(
+      buildAuditContext(req, user, 'create', 'shipment', data.id, { orderId, carrier: dto.carrier }),
+    );
     return { success: true, data };
   }
 
@@ -113,8 +123,13 @@ export class AdminShippingController {
 
   @Post('shipments/:id/cancel')
   @RequirePermissions('shipping:write')
-  async cancelShipment(@Param('id') id: string) {
+  async cancelShipment(
+    @Param('id') id: string,
+    @Req() req: Request,
+    @CurrentUser() user: AuthUser,
+  ) {
     const data = await this.shippingService.cancelByShipmentId(id);
+    await this.auditService.log(buildAuditContext(req, user, 'update', 'shipment', id, { action: 'cancel' }));
     return { success: true, data };
   }
 

@@ -1,6 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { AdminShippingController, CarrierWebhookController } from './shipping.controller';
 
+const mockReq = { ip: '127.0.0.1', headers: {} } as never;
+const mockUser = { id: 'u1' } as never;
+
 describe('ShippingController', () => {
   let shippingService: {
     quote: ReturnType<typeof vi.fn>;
@@ -11,6 +14,7 @@ describe('ShippingController', () => {
     handleWebhook: ReturnType<typeof vi.fn>;
   };
   let carrierRegistry: { listEnabledCarriers: ReturnType<typeof vi.fn> };
+  let auditService: { log: ReturnType<typeof vi.fn> };
   let adminController: AdminShippingController;
   let webhookController: CarrierWebhookController;
 
@@ -26,7 +30,12 @@ describe('ShippingController', () => {
     carrierRegistry = {
       listEnabledCarriers: vi.fn().mockResolvedValue([{ slug: 'yalidine' }]),
     };
-    adminController = new AdminShippingController(shippingService as never, carrierRegistry as never);
+    auditService = { log: vi.fn().mockResolvedValue(undefined) };
+    adminController = new AdminShippingController(
+      shippingService as never,
+      carrierRegistry as never,
+      auditService as never,
+    );
     webhookController = new CarrierWebhookController(shippingService as never);
   });
 
@@ -39,14 +48,22 @@ describe('ShippingController', () => {
     });
     expect(quoteRes.success).toBe(true);
 
-    const createRes = await adminController.createShipment('o1', { carrier: 'yalidine' });
+    const createRes = await adminController.createShipment(
+      'o1',
+      { carrier: 'yalidine' },
+      mockReq,
+      mockUser,
+    );
     expect(createRes.success).toBe(true);
     await expect(adminController.getShipment('s1')).resolves.toMatchObject({ success: true });
     await expect(adminController.trackShipment('s1')).resolves.toMatchObject({ success: true });
-    await expect(adminController.cancelShipment('s1')).resolves.toMatchObject({ success: true });
+    await expect(adminController.cancelShipment('s1', mockReq, mockUser)).resolves.toMatchObject({
+      success: true,
+    });
 
     const carriersRes = await adminController.listCarriers();
     expect(carriersRes.success).toBe(true);
+    expect(auditService.log).toHaveBeenCalledTimes(2);
   });
 
   it('handles known and unknown webhook carriers', async () => {

@@ -6,8 +6,10 @@ import {
   Param,
   Post,
   Query,
+  Req,
   UseGuards,
 } from '@nestjs/common';
+import type { Request } from 'express';
 import {
   IsInt,
   IsNumber,
@@ -19,9 +21,11 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { InventoryService } from '../../../application/inventory/inventory.service';
+import { AuditService } from '../../../application/audit/audit.service';
 import { AuthGuard } from '../../guards/auth.guard';
 import { RequirePermissions } from '../../decorators/permissions.decorator';
 import { CurrentUser } from '../../decorators/current-user.decorator';
+import { buildAuditContext } from '../../helpers/audit-context';
 import type { AuthUser } from '../../../application/auth/auth.service';
 
 class InventoryListQuery {
@@ -62,7 +66,10 @@ class ListMovementsQuery {
 @Controller('admin/inventory')
 @UseGuards(AuthGuard)
 export class AdminInventoryController {
-  constructor(@Inject(InventoryService) private readonly inventoryService: InventoryService) {}
+  constructor(
+    @Inject(InventoryService) private readonly inventoryService: InventoryService,
+    @Inject(AuditService) private readonly auditService: AuditService,
+  ) {}
 
   @Get()
   @RequirePermissions('catalog:read')
@@ -89,6 +96,7 @@ export class AdminInventoryController {
     @Param('productId') productId: string,
     @Body() dto: AdjustStockDto,
     @CurrentUser() user: AuthUser,
+    @Req() req: Request,
   ) {
     const data = await this.inventoryService.adjust({
       productId,
@@ -98,13 +106,24 @@ export class AdminInventoryController {
       actorId: user.id,
       note: dto.note,
     });
+    await this.auditService.log(
+      buildAuditContext(req, user, 'update', 'inventory', productId, {
+        quantityChange: dto.quantityChange,
+        movementType: dto.movementType,
+      }),
+    );
     return { success: true, data };
   }
 
   @Post('sync/:productId')
   @RequirePermissions('catalog:write')
-  async sync(@Param('productId') productId: string) {
+  async sync(
+    @Param('productId') productId: string,
+    @Req() req: Request,
+    @CurrentUser() user: AuthUser,
+  ) {
     await this.inventoryService.sync(productId);
+    await this.auditService.log(buildAuditContext(req, user, 'update', 'inventory', productId, { action: 'sync' }));
     return { success: true };
   }
 }

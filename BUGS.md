@@ -12,9 +12,9 @@
 |----------|------|-------|
 | Critical | 0 | 0 |
 | High | 0 | 7 |
-| Medium | 1 | 7 |
-| Low | 5 | 2 |
-| **Total** | **6** | **18** |
+| Medium | 0 | 8 |
+| Low | 2 | 5 |
+| **Total** | **2** | **22** |
 
 ---
 
@@ -116,9 +116,9 @@
 |-------|-------|
 | Severity | Low |
 | Component | Storefront product cards |
-| Status | Open |
+| Status | Fixed |
 
-`placehold.co` returns SVG; Next Image needs `unoptimized` or raster placeholders.
+Seed uses `picsum.photos` raster images; legacy `placehold.co` URLs use `unoptimized` on `Image`.
 
 ---
 
@@ -129,18 +129,18 @@
 |-------|-------|
 | Severity | Medium |
 | Component | Fulfillment, shipping, inventory, suppliers |
-| Status | Open |
+| Status | Fixed |
 
-Admin mutations in M3 modules bypass `AuditService`.
+Admin mutations in fulfillment, suppliers, inventory, and shipping controllers now call `AuditService`.
 
 ### BUG-032 — No HTTP endpoint for supplier auto-assign
 | Field | Value |
 |-------|-------|
 | Severity | Low |
 | Component | `SupplierService.autoAssignProduct` |
-| Status | Open |
+| Status | Fixed |
 
-Service method exists but no controller route exposes it.
+`POST /admin/suppliers/products/:productId/auto-assign` exposes auto-assign.
 
 ### BUG-033 — Admin shipping quote diverges from checkout quote
 | Field | Value |
