@@ -41,7 +41,7 @@ services:
     region: frankfurt
     branch: main
     buildCommand: corepack enable && pnpm install --frozen-lockfile && pnpm --filter @hasan-shop/shared build && pnpm --filter @hasan-shop/storefront build
-    startCommand: node apps/storefront/server.js
+    startCommand: node apps/storefront/.next/standalone/apps/storefront/server.js
     envVars:
       - key: NODE_ENV
         value: production
@@ -61,7 +61,7 @@ services:
     region: frankfurt
     branch: main
     buildCommand: corepack enable && pnpm install --frozen-lockfile && pnpm --filter @hasan-shop/shared build && pnpm --filter @hasan-shop/admin build
-    startCommand: node apps/admin/server.js
+    startCommand: node apps/admin/.next/standalone/apps/admin/server.js
     envVars:
       - key: NODE_ENV
         value: production
