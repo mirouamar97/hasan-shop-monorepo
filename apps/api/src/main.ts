@@ -29,14 +29,16 @@ function buildCsp(isProduction: boolean) {
 }
 
 async function bootstrap() {
+  console.log('Bootstrapping HASAN SHOP API...');
   const logger = createLogger({ name: 'hasan-shop-api' });
   const isProduction = process.env.NODE_ENV === 'production';
 
   const app = await NestFactory.create(AppModule, { logger: false });
   const config = app.get(ConfigService);
-  const port = config.get<number>('PORT', 4000);
+  const port = Number(process.env.PORT ?? config.get<number>('PORT', 4000));
   const appUrl = config.get<string>('APP_URL', 'http://localhost:3000');
   const adminUrl = config.get<string>('ADMIN_URL', 'http://localhost:3001');
+  console.log(`Config OK — listening intent port=${port}`);
 
   app.use(
     helmet({
