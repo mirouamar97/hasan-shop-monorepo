@@ -9,7 +9,7 @@ services:
     plan: free
     region: frankfurt
     branch: main
-    buildCommand: corepack enable && pnpm install --frozen-lockfile && pnpm --filter @hasan-shop/shared build && pnpm --filter @hasan-shop/logger build && pnpm --filter @hasan-shop/carrier-adapters build && pnpm --filter @hasan-shop/database build && pnpm --filter @hasan-shop/api build
+    buildCommand: bash scripts/render/build-api.sh
     startCommand: node apps/api/dist/main.js
     healthCheckPath: /api/v1/health
     envVars:
@@ -40,7 +40,7 @@ services:
     plan: free
     region: frankfurt
     branch: main
-    buildCommand: corepack enable && pnpm install --frozen-lockfile && pnpm --filter @hasan-shop/shared build && pnpm --filter @hasan-shop/storefront build
+    buildCommand: bash scripts/render/build-storefront.sh
     startCommand: node apps/storefront/.next/standalone/apps/storefront/server.js
     envVars:
       - key: NODE_ENV
@@ -60,7 +60,7 @@ services:
     plan: free
     region: frankfurt
     branch: main
-    buildCommand: corepack enable && pnpm install --frozen-lockfile && pnpm --filter @hasan-shop/shared build && pnpm --filter @hasan-shop/admin build
+    buildCommand: bash scripts/render/build-admin.sh
     startCommand: node apps/admin/.next/standalone/apps/admin/server.js
     envVars:
       - key: NODE_ENV
