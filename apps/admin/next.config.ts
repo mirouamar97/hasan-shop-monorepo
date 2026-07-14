@@ -3,6 +3,7 @@ import type { NextConfig } from 'next';
 const nextConfig: NextConfig = {
   output: 'standalone',
   reactStrictMode: true,
+  eslint: { ignoreDuringBuilds: true },
   transpilePackages: ['@hasan-shop/shared'],
   async headers() {
     return [

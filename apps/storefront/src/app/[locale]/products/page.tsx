@@ -1,6 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 import { StoreShell } from '@/components/layout/store-shell';
-import { ProductCard, ProductGridList } from '@/components/commerce/product-card';
+import { ProductGridList } from '@/components/commerce/product-card';
 import { EmptyState } from '@/components/ui/section';
 import { fetchProducts, searchProducts } from '@/lib/api';
 import { Link } from '@/i18n/navigation';
