@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { StoreShell } from '@/components/layout/store-shell';
-import { ProductCard, ProductGrid } from '@/components/commerce/product-card';
+import { ProductGridList } from '@/components/commerce/product-card';
 import { EmptyState } from '@/components/ui/section';
 import { fetchCategory, fetchProducts } from '@/lib/api';
 
@@ -57,17 +57,12 @@ export default async function CategoryPage({
           </div>
         ) : (
           <div className="mt-10">
-            <ProductGrid>
-              {data.items.map((product) => (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  locale={locale}
-                  currencyLabel={t('common.currency')}
-                  showAddToCart
-                />
-              ))}
-            </ProductGrid>
+            <ProductGridList
+              products={data.items}
+              locale={locale}
+              currencyLabel={t('common.currency')}
+              showAddToCart
+            />
           </div>
         )}
       </div>

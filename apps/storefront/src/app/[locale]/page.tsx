@@ -12,6 +12,7 @@ import {
   fetchCategories,
   fetchBrands,
   getRecommendedProducts,
+  recommendedToListItem,
   type ProductListItem,
 } from '@/lib/api';
 
@@ -24,8 +25,9 @@ function pickUnique(products: ProductListItem[], limit: number): ProductListItem
   const seen = new Set<string>();
   const out: ProductListItem[] = [];
   for (const p of products) {
-    if (seen.has(p.id)) continue;
-    seen.add(p.id);
+    const dedupeKey = p.id || p.slug;
+    if (dedupeKey && seen.has(dedupeKey)) continue;
+    if (dedupeKey) seen.add(dedupeKey);
     out.push(p);
     if (out.length >= limit) break;
   }
@@ -62,20 +64,7 @@ export default async function HomePage({
     12,
   );
   const newProducts = pickUnique(newArrivals.items.length > 0 ? newArrivals.items : catalogItems, 12);
-  const recommendedProducts = pickUnique(
-    recommended.map((r) => ({
-      id: r.id,
-      sku: r.sku,
-      slug: r.slug,
-      status: r.status,
-      price: r.price,
-      compareAtPrice: r.compareAtPrice,
-      name: r.name,
-      shortDescription: r.shortDescription,
-      primaryImage: r.primaryImage,
-    })),
-    8,
-  );
+  const recommendedProducts = pickUnique(recommended.map(recommendedToListItem), 8);
 
   const spotlight = featuredProducts[0] ?? catalogItems[0] ?? null;
   const currency = t('common.currency');

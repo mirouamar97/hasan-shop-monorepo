@@ -3,7 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { useRouter } from '@/i18n/navigation';
 import { SectionHeader } from '@/components/ui/section';
-import { ProductCard, ProductGrid } from '@/components/commerce/product-card';
+import { ProductGridList } from '@/components/commerce/product-card';
 import { StickyAddToCart } from '@/components/cro/sticky-add-to-cart';
 import type { ProductListItem, RecentlyViewedItem } from '@/lib/api';
 
@@ -56,51 +56,36 @@ export function ProductDetailClient({
       {fbtProducts.length > 0 && (
         <section className="mt-16 border-t border-[var(--color-border)] pt-16">
           <SectionHeader title={t('products.fbt')} subtitle={t('products.fbtSubtitle')} />
-          <ProductGrid>
-            {fbtProducts.map((p) => (
-              <ProductCard
-                key={p.id}
-                product={p}
-                locale={locale}
-                currencyLabel={currencyLabel}
-                showAddToCart
-              />
-            ))}
-          </ProductGrid>
+          <ProductGridList
+            products={fbtProducts}
+            locale={locale}
+            currencyLabel={currencyLabel}
+            showAddToCart
+          />
         </section>
       )}
 
       {relatedProducts.length > 0 && (
         <section className="mt-16 border-t border-[var(--color-border)] pt-16">
           <SectionHeader title={t('products.related')} />
-          <ProductGrid>
-            {relatedProducts.map((p) => (
-              <ProductCard
-                key={p.id}
-                product={p}
-                locale={locale}
-                currencyLabel={currencyLabel}
-                showAddToCart
-              />
-            ))}
-          </ProductGrid>
+          <ProductGridList
+            products={relatedProducts}
+            locale={locale}
+            currencyLabel={currencyLabel}
+            showAddToCart
+          />
         </section>
       )}
 
       {recentAsProducts.length > 0 && (
         <section className="mt-16 border-t border-[var(--color-border)] pt-16">
           <SectionHeader title={t('products.recentlyViewed')} />
-          <ProductGrid>
-            {recentAsProducts.map((p) => (
-              <ProductCard
-                key={p.id}
-                product={p}
-                locale={locale}
-                currencyLabel={currencyLabel}
-                showAddToCart
-              />
-            ))}
-          </ProductGrid>
+          <ProductGridList
+            products={recentAsProducts}
+            locale={locale}
+            currencyLabel={currencyLabel}
+            showAddToCart
+          />
         </section>
       )}
 

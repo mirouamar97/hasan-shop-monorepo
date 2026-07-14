@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { AdminShell } from '@/components/admin-shell';
-import { fetchAdminOrders } from '@/lib/api';
+import { fetchAdminOrders, fetchAnalyticsOverview } from '@/lib/api';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000';
 
@@ -18,6 +18,7 @@ interface AuthUser {
 export default function DashboardPage() {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [orderCount, setOrderCount] = useState<number | null>(null);
+  const [revenue, setRevenue] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -28,9 +29,15 @@ export default function DashboardPage() {
       })
       .then((data) => {
         setUser(data.data);
-        return fetchAdminOrders({ page: 1, pageSize: 1 });
+        return Promise.all([
+          fetchAdminOrders({ page: 1, pageSize: 1 }),
+          fetchAnalyticsOverview().catch(() => null),
+        ]);
       })
-      .then((orders) => setOrderCount(orders.pagination.total))
+      .then(([orders, analytics]) => {
+        setOrderCount(orders.pagination.total);
+        setRevenue(analytics == null ? null : String(analytics.revenue));
+      })
       .catch(() => {
         globalThis.location.href = '/';
       })
@@ -39,39 +46,68 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        <p className="text-gray-500">Loading...</p>
+      <div className="flex min-h-screen items-center justify-center text-[var(--color-muted)]">
+        Loading operations…
       </div>
     );
   }
 
+  const links = [
+    {
+      href: '/dashboard/orders',
+      label: 'Orders',
+      value: orderCount === null ? '—' : orderCount.toLocaleString(),
+      desc: 'COD pipeline',
+    },
+    {
+      href: '/dashboard/catalog/products',
+      label: 'Catalog',
+      value: 'Products',
+      desc: 'Manage SKUs & media',
+    },
+    {
+      href: '/dashboard/fulfillment',
+      label: 'Fulfillment',
+      value: 'Workflow',
+      desc: 'Pick · pack · ship',
+    },
+    {
+      href: '/dashboard/settings',
+      label: 'Brand',
+      value: 'Settings',
+      desc: 'Favicon, SEO, social',
+    },
+  ];
+
   return (
-    <AdminShell title="Dashboard">
-      <p className="text-gray-600">
-        Welcome, {user?.firstName} {user?.lastName} ({user?.roleSlug})
-      </p>
-      <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-3">
-        <Link
-          href="/dashboard/catalog/products"
-          className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm hover:border-blue-300"
-        >
-          <p className="text-sm text-gray-500">Catalog</p>
-          <p className="mt-1 text-2xl font-bold">Products</p>
-        </Link>
-        <Link
-          href="/dashboard/orders"
-          className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm hover:border-blue-300"
-        >
-          <p className="text-sm text-gray-500">Orders</p>
-          <p className="mt-1 text-2xl font-bold">
-            {orderCount === null ? '—' : orderCount.toLocaleString()}
-          </p>
-        </Link>
-        <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-          <p className="text-sm text-gray-500">Revenue</p>
-          <p className="mt-1 text-2xl font-bold">—</p>
-        </div>
+    <AdminShell
+      title="Dashboard"
+      subtitle={`Signed in as ${user?.firstName} ${user?.lastName} · ${user?.roleSlug}`}
+    >
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        {links.map((item) => (
+          <Link key={item.href} href={item.href} className="admin-card block p-6">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--color-muted)]">
+              {item.label}
+            </p>
+            <p className="admin-display mt-3 text-3xl">{item.value}</p>
+            <p className="mt-2 text-sm text-[var(--color-muted)]">{item.desc}</p>
+          </Link>
+        ))}
       </div>
+
+      <section className="admin-card mt-6 p-6">
+        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--color-muted)]">
+          Revenue pulse
+        </p>
+        <p className="admin-display mt-3 text-4xl">
+          {revenue == null ? '—' : `${Number(revenue).toLocaleString()} DZD`}
+        </p>
+        <p className="mt-2 max-w-2xl text-sm text-[var(--color-muted)]">
+          Numbers refresh from analytics when available. Keep Docker/API online locally, or connect
+          the production database after deploy.
+        </p>
+      </section>
     </AdminShell>
   );
 }

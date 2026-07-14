@@ -134,3 +134,42 @@ export function ProductGrid({
     </div>
   );
 }
+
+function productListKey(product: ProductListItem, index: number): string {
+  return product.id || product.slug || `product-${index}`;
+}
+
+/** Client-side grid mapping — keeps React keys when used from Server Components. */
+export function ProductGridList({
+  products,
+  locale,
+  currencyLabel,
+  className,
+  showAddToCart,
+  priorityCount = 4,
+  badge,
+}: {
+  products: ProductListItem[];
+  locale: string;
+  currencyLabel: string;
+  className?: string;
+  showAddToCart?: boolean;
+  priorityCount?: number;
+  badge?: string;
+}) {
+  return (
+    <ProductGrid className={className}>
+      {products.map((product, i) => (
+        <ProductCard
+          key={productListKey(product, i)}
+          product={product}
+          locale={locale}
+          currencyLabel={currencyLabel}
+          showAddToCart={showAddToCart}
+          priority={i < priorityCount}
+          badge={badge}
+        />
+      ))}
+    </ProductGrid>
+  );
+}

@@ -16,9 +16,16 @@ export default function LoginPage() {
     setError('');
 
     try {
+      const csrfRes = await fetch(`${API_URL}/api/v1/auth/csrf`, { credentials: 'include' });
+      const csrfJson = (await csrfRes.json().catch(() => null)) as { data?: { token?: string } } | null;
+      const csrfToken = csrfJson?.data?.token;
+
       const res = await fetch(`${API_URL}/api/v1/auth/login`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(csrfToken ? { 'X-CSRF-Token': csrfToken } : {}),
+        },
         credentials: 'include',
         body: JSON.stringify({ email, password }),
       });
@@ -37,45 +44,72 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-4">
-      <div className="w-full max-w-md rounded-xl border border-gray-200 bg-white p-8 shadow-sm">
-        <h1 className="mb-2 text-2xl font-bold text-[var(--color-primary)]">HASAN SHOP</h1>
-        <p className="mb-6 text-sm text-gray-500">Administration Dashboard</p>
+    <div className="relative flex min-h-screen overflow-hidden">
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            'linear-gradient(135deg, #0c1117 0%, #151b24 48%, #1d2733 100%)',
+        }}
+      />
+      <div
+        className="absolute inset-0 opacity-40"
+        style={{
+          backgroundImage:
+            'radial-gradient(circle at 20% 20%, rgb(212 149 10 / 0.35), transparent 36%), radial-gradient(circle at 80% 0%, rgb(31 111 235 / 0.25), transparent 42%)',
+        }}
+      />
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label htmlFor="email" className="mb-1 block text-sm font-medium">
-              Email
-            </label>
+      <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-col justify-center gap-10 px-6 py-16 lg:flex-row lg:items-center lg:justify-between">
+        <div className="admin-rise max-w-xl text-white">
+          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--color-accent)]">
+            HASAN SHOP
+          </p>
+          <h1 className="admin-display mt-4 text-5xl md:text-6xl">Operations console</h1>
+          <p className="mt-4 max-w-md text-base leading-relaxed text-white/70">
+            Run catalog, COD orders, Yalidine shipping, and Algeria fulfillment from one high-signal
+            control surface.
+          </p>
+        </div>
+
+        <form
+          onSubmit={handleSubmit}
+          className="admin-rise w-full max-w-md rounded-2xl border border-white/10 bg-white p-8 shadow-[var(--shadow-md)]"
+          style={{ animationDelay: '80ms' }}
+        >
+          <p className="text-sm font-semibold text-[var(--color-muted)]">Sign in</p>
+          <h2 className="admin-display mt-1 text-3xl">Welcome back</h2>
+
+          <label className="mt-6 block text-sm font-medium" htmlFor="email">
+            Email
             <input
               id="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="admin-input mt-1.5"
+              autoComplete="username"
             />
-          </div>
-          <div>
-            <label htmlFor="password" className="mb-1 block text-sm font-medium">
-              Password
-            </label>
+          </label>
+
+          <label className="mt-4 block text-sm font-medium" htmlFor="password">
+            Password
             <input
               id="password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="admin-input mt-1.5"
+              autoComplete="current-password"
             />
-          </div>
-          {error && <p className="text-sm text-red-600">{error}</p>}
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full rounded-lg bg-[var(--color-primary)] py-2.5 text-sm font-semibold text-white hover:opacity-90 disabled:opacity-50"
-          >
-            {loading ? 'Signing in...' : 'Sign In'}
+          </label>
+
+          {error ? <p className="mt-3 text-sm text-[var(--color-danger)]">{error}</p> : null}
+
+          <button type="submit" disabled={loading} className="admin-btn admin-btn-accent mt-6 w-full">
+            {loading ? 'Signing in…' : 'Enter dashboard'}
           </button>
         </form>
       </div>

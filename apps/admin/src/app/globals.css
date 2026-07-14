@@ -1,14 +1,133 @@
 @import 'tailwindcss';
 
+/* HASAN SHOP Admin — Operations Console
+   Direction: graphite ops + amber signal (electronics commerce) */
+
 :root {
-  --color-primary: #1a56db;
-  --color-sidebar: #111827;
-  --color-background: #f9fafb;
-  --color-foreground: #111827;
+  --color-ink: #0c1117;
+  --color-ink-soft: #151b24;
+  --color-sidebar: #0c1117;
+  --color-sidebar-muted: #8b95a5;
+  --color-bg: #eef1f5;
+  --color-surface: #ffffff;
+  --color-surface-muted: #f5f7fa;
+  --color-foreground: #0c1117;
+  --color-muted: #5c6778;
+  --color-border: #d7dde6;
+  --color-primary: #0c1117;
+  --color-accent: #d4950a;
+  --color-accent-soft: #fff4d6;
+  --color-success: #0f7a55;
+  --color-danger: #c62828;
+  --color-info: #1f6feb;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --shadow-sm: 0 1px 2px rgb(12 17 23 / 0.05);
+  --shadow-md: 0 10px 30px rgb(12 17 23 / 0.08);
+  --font-ui: var(--font-admin), 'Segoe UI', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
 }
 
 body {
-  background-color: var(--color-background);
+  background:
+    radial-gradient(1200px 500px at 10% -10%, rgb(212 149 10 / 0.08), transparent 55%),
+    radial-gradient(900px 400px at 100% 0%, rgb(31 111 235 / 0.06), transparent 50%),
+    var(--color-bg);
   color: var(--color-foreground);
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family: var(--font-ui);
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.admin-display {
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.admin-card {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+  transition: border-color 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+}
+
+.admin-card:hover {
+  border-color: rgb(212 149 10 / 0.45);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.admin-input {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  padding: 0.7rem 0.9rem;
+  font: inherit;
+  outline: none;
+}
+
+.admin-input:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgb(212 149 10 / 0.18);
+}
+
+.admin-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 0;
+  border-radius: var(--radius-md);
+  background: var(--color-ink);
+  color: white;
+  font: inherit;
+  font-weight: 600;
+  padding: 0.75rem 1.1rem;
+  cursor: pointer;
+  transition: opacity 140ms ease, transform 140ms ease;
+}
+
+.admin-btn:hover {
+  opacity: 0.92;
+}
+
+.admin-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.admin-btn-accent {
+  background: linear-gradient(135deg, #e3a511, #c07d08);
+  color: #1a1200;
+}
+
+@keyframes adminRise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.admin-rise {
+  animation: adminRise 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }

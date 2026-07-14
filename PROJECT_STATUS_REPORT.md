@@ -127,16 +127,20 @@
 ## 7. اقتراحات تعديلات وإضافات (v1.1.1 → RC1)
 
 ### أولوية عالية
-- [ ] تشغيل Docker + `pnpm ci` حتى 14/14 E2E
+- [x] تشغيل Docker + migrate + seed (health database/redis/meili/storage up)
 - [ ] نقل المشروع خارج OneDrive أو تفعيل symlinks
 - [x] Variant picker في صفحة المنتج
-- [ ] لقطات screenshots جديدة مع API + بيانات seed (يتطلب Docker)
+- [ ] لقطات screenshots جديدة مع API + بيانات seed
+- [x] توحيد shipping quote (BUG-033)
+- [x] Admin branding settings page + storefront metadata/footer
+- [x] E2E checkout COD flow spec (`checkout-cod.spec.ts`)
 
 ### أولوية متوسطة (v1.1.0)
-- [ ] Admin: branding كامل من لوحة التحكم (favicon, OG, social)
+- [x] Admin: branding من لوحة التحكم (favicon, OG via logo, social)
 - [x] Storefront: صفحة categories list منفصلة (`/categories`)
 - [x] Newsletter: API + جدول `newsletter_subscribers` + ربط storefront
 - [ ] Lighthouse audit موثّق >95
+- [ ] تشغيل `pnpm ci` كامل (E2E) على الـ stack الحي
 
 ### أولوية منخفضة (v1.2.0)
 - [ ] 2FA endpoints

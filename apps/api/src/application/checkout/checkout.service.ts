@@ -11,8 +11,6 @@ import {
 import type { DeliveryType, PaymentMethod } from '@hasan-shop/shared/constants';
 import type {
   ICartRepository,
-  IShippingRepository,
-  ShippingQuoteInput,
   ShippingQuoteResult,
 } from '../../domain/repositories/cart.repository';
 import type { ICheckoutRepository } from '../../domain/repositories/checkout.repository';
@@ -25,9 +23,9 @@ import {
   ORDER_REPOSITORY,
   PRODUCT_REPOSITORY,
   SETTINGS_REPOSITORY,
-  SHIPPING_REPOSITORY,
 } from '../../domain/repositories/tokens';
 import { AutomationService } from '../automation/automation.service';
+import { ShippingService } from '../shipping/shipping.service';
 
 export interface QuoteShippingInput {
   wilayaCode: string;
@@ -84,22 +82,24 @@ export class CheckoutService {
     @Inject(CART_REPOSITORY) private readonly cartRepo: ICartRepository,
     @Inject(CHECKOUT_REPOSITORY) private readonly checkoutRepo: ICheckoutRepository,
     @Inject(ORDER_REPOSITORY) private readonly orderRepo: IOrderRepository,
-    @Inject(SHIPPING_REPOSITORY) private readonly shippingRepo: IShippingRepository,
+    @Inject(ShippingService) private readonly shippingService: ShippingService,
     @Inject(PRODUCT_REPOSITORY) private readonly productsRepo: IProductRepository,
     @Inject(SETTINGS_REPOSITORY) private readonly settingsRepo: ISettingsRepository,
     @Inject(AutomationService) private readonly automation: AutomationService,
   ) {}
 
   async quoteShipping(input: QuoteShippingInput): Promise<ShippingQuoteResult> {
-    const quoteInput: ShippingQuoteInput = {
+    const [quote] = await this.shippingService.quote({
       wilayaCode: input.wilayaCode,
       communeCode: input.communeCode,
       deliveryType: input.deliveryType,
       subtotal: input.subtotal,
       weightKg: input.weightKg,
-    };
-
-    return this.shippingRepo.quote(quoteInput);
+    });
+    if (!quote) {
+      throw new BadRequestException('Unable to calculate shipping quote');
+    }
+    return quote;
   }
 
   async placeOrder(input: PlaceOrderInput): Promise<OrderRecord> {

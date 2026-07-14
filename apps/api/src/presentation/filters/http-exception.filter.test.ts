@@ -33,4 +33,23 @@ describe('HttpExceptionFilter', () => {
     expect(logger.error).toHaveBeenCalledOnce();
     expect(response.status).toHaveBeenCalledWith(500);
   });
+
+  it('maps connection refused errors to 503', () => {
+    const logger = { error: vi.fn() };
+    const filter = new HttpExceptionFilter(logger as never);
+    const response = { status: vi.fn().mockReturnThis(), json: vi.fn() };
+    const err = Object.assign(new Error('connect ECONNREFUSED 127.0.0.1:5433'), {
+      code: 'ECONNREFUSED',
+    });
+
+    filter.catch(err, buildHost(response));
+
+    expect(response.status).toHaveBeenCalledWith(503);
+    expect(response.json).toHaveBeenCalledWith(
+      expect.objectContaining({
+        statusCode: 503,
+        error: 'SERVICE_UNAVAILABLE',
+      }),
+    );
+  });
 });

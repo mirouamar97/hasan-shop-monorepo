@@ -13,7 +13,12 @@ import type {
   ShippingQuoteRequest,
   ShippingQuoteResponse,
 } from '../../domain/repositories/shipment.repository';
-import { ORDER_REPOSITORY, SHIPMENT_REPOSITORY } from '../../domain/repositories/tokens';
+import type { ISettingsRepository } from '../../domain/repositories/settings.repository';
+import {
+  ORDER_REPOSITORY,
+  SETTINGS_REPOSITORY,
+  SHIPMENT_REPOSITORY,
+} from '../../domain/repositories/tokens';
 import { WebhookSecurityService } from '../../infrastructure/security/webhook-security.service';
 import { CarrierRegistryService } from './carrier-registry.service';
 
@@ -42,6 +47,9 @@ const CARRIER_STATUS_MAP: Record<string, ShipmentStatus> = {
   cancelled: 'cancelled',
 };
 
+const FLAT_HOME_RATE = 600;
+const FLAT_STOP_DESK_RATE = 400;
+
 @Injectable()
 export class ShippingService {
   constructor(
@@ -49,6 +57,7 @@ export class ShippingService {
     @Inject(ORDER_REPOSITORY) private readonly orderRepo: IOrderRepository,
     private readonly carrierRegistry: CarrierRegistryService,
     @Inject(WebhookSecurityService) private readonly webhookSecurity: WebhookSecurityService,
+    @Inject(SETTINGS_REPOSITORY) private readonly settingsRepo: ISettingsRepository,
   ) {}
 
   async quote(request: ShippingQuoteRequest): Promise<ShippingQuoteResponse[]> {
@@ -58,29 +67,46 @@ export class ShippingService {
       throw new BadRequestException(`Carrier not enabled: ${carrierSlug}`);
     }
 
-    const adapter = await this.carrierRegistry.getAdapter(carrierSlug);
     const originWilayaCode = config.originWilayaCode ?? '16';
     const weightKg = request.weightKg ?? 1;
     const codAmount = request.codAmount ?? request.subtotal;
 
-    const rate = await adapter.calculateRate({
-      carrier: carrierSlug,
-      fromWilayaCode: originWilayaCode,
-      toWilayaCode: request.wilayaCode,
-      toCommuneCode: request.communeCode,
-      weightKg,
-      codAmount,
-      deliveryType: request.deliveryType,
-    });
+    let cost: number;
+    let currency = 'DZD';
+    let estimatedDays: number;
+
+    try {
+      const adapter = await this.carrierRegistry.getAdapter(carrierSlug);
+      const rate = await adapter.calculateRate({
+        carrier: carrierSlug,
+        fromWilayaCode: originWilayaCode,
+        toWilayaCode: request.wilayaCode,
+        toCommuneCode: request.communeCode,
+        weightKg,
+        codAmount,
+        deliveryType: request.deliveryType,
+      });
+      cost = rate.price;
+      currency = rate.currency;
+      estimatedDays = rate.estimatedDays;
+    } catch {
+      cost = request.deliveryType === 'stop_desk' ? FLAT_STOP_DESK_RATE : FLAT_HOME_RATE;
+      estimatedDays = request.wilayaCode === originWilayaCode ? 2 : 4;
+    }
+
+    const freeShippingApplied = await this.isFreeShipping(request.subtotal, cost);
+    if (freeShippingApplied) {
+      cost = 0;
+    }
 
     return [
       {
-        cost: rate.price,
-        currency: rate.currency,
-        estimatedDays: rate.estimatedDays,
-        estimateText: `${rate.estimatedDays}-${rate.estimatedDays + 1} days`,
+        cost,
+        currency,
+        estimatedDays,
+        estimateText: `${estimatedDays}-${estimatedDays + 1} days`,
         carrier: carrierSlug,
-        freeShippingApplied: rate.price === 0,
+        freeShippingApplied,
       },
     ];
   }
@@ -325,5 +351,14 @@ export class ShippingService {
       }
     }
     return null;
+  }
+
+  private async isFreeShipping(subtotal: number, cost: number): Promise<boolean> {
+    if (cost === 0) return true;
+    const settings = await this.settingsRepo.findAll();
+    const thresholdRaw = settings.free_shipping_threshold;
+    if (!thresholdRaw) return false;
+    const threshold = Number(thresholdRaw);
+    return !Number.isNaN(threshold) && subtotal >= threshold;
   }
 }

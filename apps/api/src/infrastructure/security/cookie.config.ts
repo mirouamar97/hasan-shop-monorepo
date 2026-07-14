@@ -1,16 +1,19 @@
 import type { CookieOptions } from 'express';
 
-const DEFAULT_SAME_SITE: CookieOptions['sameSite'] = 'strict';
+function cookieSameSite(): CookieOptions['sameSite'] {
+  if (process.env.COOKIE_CROSS_SITE === 'true') return 'none';
+  return 'strict';
+}
 
 function isSecureCookie(): boolean {
-  return process.env.NODE_ENV === 'production';
+  return process.env.NODE_ENV === 'production' || process.env.COOKIE_CROSS_SITE === 'true';
 }
 
 export function getSessionCookieOptions(maxAgeMs: number): CookieOptions {
   return {
     httpOnly: true,
     secure: isSecureCookie(),
-    sameSite: DEFAULT_SAME_SITE,
+    sameSite: cookieSameSite(),
     maxAge: maxAgeMs,
     path: '/',
   };
@@ -20,7 +23,7 @@ export function getCsrfCookieOptions(maxAgeMs = 60 * 60 * 1000): CookieOptions {
   return {
     httpOnly: false,
     secure: isSecureCookie(),
-    sameSite: DEFAULT_SAME_SITE,
+    sameSite: cookieSameSite(),
     maxAge: maxAgeMs,
     path: '/',
   };
@@ -29,17 +32,17 @@ export function getCsrfCookieOptions(maxAgeMs = 60 * 60 * 1000): CookieOptions {
 export function getClearCookieOptions(): CookieOptions {
   return {
     secure: isSecureCookie(),
-    sameSite: DEFAULT_SAME_SITE,
+    sameSite: cookieSameSite(),
     path: '/',
   };
 }
 
-/** Guest session cookies (cart, engagement) — lax sameSite for storefront cross-page navigation */
+/** Guest session cookies (cart, engagement) */
 export function getGuestCookieOptions(maxAgeMs: number): CookieOptions {
   return {
     httpOnly: true,
     secure: isSecureCookie(),
-    sameSite: 'lax',
+    sameSite: process.env.COOKIE_CROSS_SITE === 'true' ? 'none' : 'lax',
     maxAge: maxAgeMs,
     path: '/',
   };

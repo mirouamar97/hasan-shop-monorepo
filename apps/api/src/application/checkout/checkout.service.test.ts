@@ -2,7 +2,8 @@ import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { BadRequestException } from '@nestjs/common';
 import { CheckoutService } from './checkout.service';
 import type { AutomationService } from '../automation/automation.service';
-import type { ICartRepository, IShippingRepository } from '../../domain/repositories/cart.repository';
+import type { ShippingService } from '../shipping/shipping.service';
+import type { ICartRepository } from '../../domain/repositories/cart.repository';
 import type { ICheckoutRepository } from '../../domain/repositories/checkout.repository';
 import type { IOrderRepository, OrderRecord } from '../../domain/repositories/order.repository';
 import type { IProductRepository, ProductDetail } from '../../domain/repositories/product.repository';
@@ -93,7 +94,7 @@ describe('CheckoutService', () => {
   let cartRepo: ICartRepository;
   let checkoutRepo: ICheckoutRepository;
   let orderRepo: IOrderRepository;
-  let shippingRepo: IShippingRepository;
+  let shippingService: ShippingService;
   let productsRepo: IProductRepository;
   let settingsRepo: ISettingsRepository;
   let automation: AutomationService;
@@ -112,17 +113,18 @@ describe('CheckoutService', () => {
       findRecentDuplicate: vi.fn(),
       findById: vi.fn(),
     } as unknown as IOrderRepository;
-    shippingRepo = {
-      quote: vi.fn().mockResolvedValue({
-        cost: 600,
-        currency: 'DZD',
-        estimatedDays: 3,
-        estimateText: '3-4 days',
-        carrier: 'yalidine',
-        freeShippingApplied: false,
-      }),
-      getDefaultCarrier: vi.fn().mockResolvedValue(null),
-    } as unknown as IShippingRepository;
+    shippingService = {
+      quote: vi.fn().mockResolvedValue([
+        {
+          cost: 600,
+          currency: 'DZD',
+          estimatedDays: 3,
+          estimateText: '3-4 days',
+          carrier: 'yalidine',
+          freeShippingApplied: false,
+        },
+      ]),
+    } as unknown as ShippingService;
     productsRepo = {
       findById: vi.fn(),
     } as unknown as IProductRepository;
@@ -139,7 +141,7 @@ describe('CheckoutService', () => {
       cartRepo,
       checkoutRepo,
       orderRepo,
-      shippingRepo,
+      shippingService,
       productsRepo,
       settingsRepo,
       automation,
@@ -221,7 +223,7 @@ describe('CheckoutService', () => {
     expect(automation.onOrderCreated).toHaveBeenCalledWith(order);
   });
 
-  it('delegates shipping quote to repository', async () => {
+  it('delegates shipping quote to ShippingService', async () => {
     const quote = await service.quoteShipping({
       wilayaCode: '16',
       communeCode: '16001',
@@ -230,6 +232,6 @@ describe('CheckoutService', () => {
     });
 
     expect(quote.cost).toBe(600);
-    expect(shippingRepo.quote).toHaveBeenCalledOnce();
+    expect(shippingService.quote).toHaveBeenCalledOnce();
   });
 });

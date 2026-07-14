@@ -1,0 +1,73 @@
+# HASAN SHOP — Render Blueprint
+# Deploy via Dashboard → Blueprints → New → connect this repo
+# Requires: GitHub connection + Free PG slot (or starter DB)
+
+services:
+  - type: web
+    name: hasan-shop-api
+    runtime: node
+    plan: free
+    region: frankfurt
+    branch: main
+    buildCommand: corepack enable && pnpm install --frozen-lockfile && pnpm --filter @hasan-shop/shared build && pnpm --filter @hasan-shop/logger build && pnpm --filter @hasan-shop/carrier-adapters build && pnpm --filter @hasan-shop/database build && pnpm --filter @hasan-shop/api build
+    startCommand: node apps/api/dist/main.js
+    healthCheckPath: /api/v1/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "4000"
+      - key: DATABASE_URL
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: AUTH_SECRET
+        generateValue: true
+      - key: APP_URL
+        sync: false
+      - key: ADMIN_URL
+        sync: false
+      - key: WEBHOOK_SECRET_DEFAULT
+        generateValue: true
+      - key: CLAMAV_REQUIRED
+        value: "false"
+      - key: MEILISEARCH_HOST
+        value: ""
+
+  - type: web
+    name: hasan-shop-storefront
+    runtime: node
+    plan: free
+    region: frankfurt
+    branch: main
+    buildCommand: corepack enable && pnpm install --frozen-lockfile && pnpm --filter @hasan-shop/shared build && pnpm --filter @hasan-shop/storefront build
+    startCommand: node apps/storefront/server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "3000"
+      - key: HOSTNAME
+        value: 0.0.0.0
+      - key: NEXT_PUBLIC_API_URL
+        sync: false
+      - key: NEXT_PUBLIC_APP_URL
+        sync: false
+
+  - type: web
+    name: hasan-shop-admin
+    runtime: node
+    plan: free
+    region: frankfurt
+    branch: main
+    buildCommand: corepack enable && pnpm install --frozen-lockfile && pnpm --filter @hasan-shop/shared build && pnpm --filter @hasan-shop/admin build
+    startCommand: node apps/admin/server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "3001"
+      - key: HOSTNAME
+        value: 0.0.0.0
+      - key: NEXT_PUBLIC_API_URL
+        sync: false

@@ -1,29 +1,29 @@
 @import 'tailwindcss';
 
 /* ═══════════════════════════════════════════════════════════════
-   HASAN SHOP — Design System v1.1
-   Premium identity: Obsidian & Champagne
+   HASAN SHOP — Design System v1.2
+   Premium identity: Graphite Ink & Signal Amber (electronics)
    ═══════════════════════════════════════════════════════════════ */
 
 :root {
   /* Color — Light */
-  --color-bg: #f7f6f3;
+  --color-bg: #eef1f5;
   --color-bg-elevated: #ffffff;
   --color-surface: #ffffff;
-  --color-surface-muted: #f0efec;
-  --color-foreground: #0a0a0b;
-  --color-foreground-secondary: #3d3d42;
-  --color-muted: #6e6e73;
-  --color-border: #e4e3df;
-  --color-border-strong: #c8c7c2;
+  --color-surface-muted: #e6ebf2;
+  --color-foreground: #0c1117;
+  --color-foreground-secondary: #3a4452;
+  --color-muted: #5c6778;
+  --color-border: #d5dde8;
+  --color-border-strong: #b4c0d0;
 
-  --color-primary: #0a0a0b;
-  --color-primary-foreground: #fafaf9;
-  --color-accent: #b8956b;
-  --color-accent-foreground: #0a0a0b;
-  --color-accent-soft: #ebe4d8;
-  --color-success: #1a7f5a;
-  --color-danger: #c41e3a;
+  --color-primary: #0c1117;
+  --color-primary-foreground: #f7f9fc;
+  --color-accent: #d4950a;
+  --color-accent-foreground: #1a1200;
+  --color-accent-soft: #fff1c9;
+  --color-success: #0f7a55;
+  --color-danger: #c62828;
   --color-warning: #d97706;
 
   /* Typography */
@@ -89,8 +89,8 @@
 
   --color-primary: #fafaf9;
   --color-primary-foreground: #0a0a0b;
-  --color-accent: #c9a87c;
-  --color-accent-soft: #2a2520;
+  --color-accent: #f0b429;
+  --color-accent-soft: #2a2414;
 
   --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.2);
   --shadow-md: 0 4px 12px rgb(0 0 0 / 0.3);
@@ -122,8 +122,8 @@
     --color-border-strong: #3d3d42;
     --color-primary: #fafaf9;
     --color-primary-foreground: #0a0a0b;
-    --color-accent: #c9a87c;
-    --color-accent-soft: #2a2520;
+    --color-accent: #f0b429;
+    --color-accent-soft: #2a2414;
   }
 }
 

@@ -623,3 +623,16 @@ export async function addCustomerTag(payload: { phone?: string; customerId?: str
     },
   );
 }
+
+export type AdminSettingsMap = Record<string, string>;
+
+export async function fetchAdminSettings() {
+  return apiFetch<AdminSettingsMap>('/settings');
+}
+
+export async function updateAdminSettings(updates: Array<{ key: string; value: string }>) {
+  return apiFetch<AdminSettingsMap>('/settings', {
+    method: 'PUT',
+    body: JSON.stringify({ settings: updates }),
+  });
+}

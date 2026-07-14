@@ -35,4 +35,8 @@ export class StorefrontTrackPage {
       this.page.getByText('لم يتم العثور على الطلب. تحقق من رقم الطلب والهاتف.'),
     ).toBeVisible({ timeout: 15_000 });
   }
+
+  async expectOrderFound(orderNumber: string): Promise<void> {
+    await expect(this.page.getByText(orderNumber)).toBeVisible({ timeout: 20_000 });
+  }
 }

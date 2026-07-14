@@ -114,7 +114,15 @@ describe('ShippingService', () => {
     webhookSecurity = {
       validate: vi.fn().mockResolvedValue(undefined),
     };
-    service = new ShippingService(shipmentRepo, orderRepo, carrierRegistry, webhookSecurity as never);
+    service = new ShippingService(
+      shipmentRepo,
+      orderRepo,
+      carrierRegistry,
+      webhookSecurity as never,
+      {
+        findAll: vi.fn().mockResolvedValue({ free_shipping_threshold: '10000' }),
+      } as never,
+    );
   });
 
   it('returns a shipping quote for an enabled carrier', async () => {
@@ -149,6 +157,74 @@ describe('ShippingService', () => {
     expect(quotes).toHaveLength(1);
     expect(quotes[0]?.cost).toBe(600);
     expect(quotes[0]?.carrier).toBe('yalidine');
+  });
+
+  it('applies free shipping threshold from settings', async () => {
+    vi.mocked(shipmentRepo.getCarrierConfig).mockResolvedValue({
+      id: 'cfg-1',
+      carrier: 'yalidine',
+      displayName: 'Yalidine',
+      isEnabled: true,
+      isDefault: true,
+      credentials: {},
+      settings: {},
+      originWilayaCode: '16',
+    });
+    vi.mocked(shipmentRepo.getDefaultCarrier).mockResolvedValue({
+      id: 'cfg-1',
+      carrier: 'yalidine',
+      displayName: 'Yalidine',
+      isEnabled: true,
+      isDefault: true,
+      credentials: {},
+      settings: {},
+      originWilayaCode: '16',
+    });
+
+    const quotes = await service.quote({
+      wilayaCode: '16',
+      communeCode: '1601',
+      deliveryType: 'home',
+      subtotal: 12_000,
+    });
+
+    expect(quotes[0]?.cost).toBe(0);
+    expect(quotes[0]?.freeShippingApplied).toBe(true);
+  });
+
+  it('falls back to flat rates when carrier adapter fails', async () => {
+    vi.mocked(shipmentRepo.getCarrierConfig).mockResolvedValue({
+      id: 'cfg-1',
+      carrier: 'yalidine',
+      displayName: 'Yalidine',
+      isEnabled: true,
+      isDefault: true,
+      credentials: {},
+      settings: {},
+      originWilayaCode: '16',
+    });
+    vi.mocked(shipmentRepo.getDefaultCarrier).mockResolvedValue({
+      id: 'cfg-1',
+      carrier: 'yalidine',
+      displayName: 'Yalidine',
+      isEnabled: true,
+      isDefault: true,
+      credentials: {},
+      settings: {},
+      originWilayaCode: '16',
+    });
+    vi.mocked(carrierRegistry.getAdapter).mockRejectedValue(new Error('Carrier adapter not registered'));
+
+    const quotes = await service.quote({
+      wilayaCode: '31',
+      communeCode: '3101',
+      deliveryType: 'home',
+      subtotal: 5000,
+    });
+
+    expect(quotes[0]?.cost).toBe(600);
+    expect(quotes[0]?.estimatedDays).toBe(4);
+    expect(quotes[0]?.freeShippingApplied).toBe(false);
   });
 
   it('throws when carrier is not enabled', async () => {

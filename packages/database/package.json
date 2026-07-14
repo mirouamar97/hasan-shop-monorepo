@@ -37,6 +37,7 @@
   },
   "dependencies": {
     "@hasan-shop/shared": "workspace:*",
+    "dotenv": "^16.5.0",
     "drizzle-orm": "^0.45.2",
     "postgres": "^3.4.7"
   },

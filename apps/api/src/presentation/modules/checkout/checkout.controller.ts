@@ -3,6 +3,7 @@ import type { Request } from 'express';
 import { v4 as uuid } from 'uuid';
 import {
   IsEnum,
+  IsNumber,
   IsOptional,
   IsString,
   IsUUID,
@@ -26,6 +27,8 @@ class ShippingQuoteDto {
   deliveryType!: (typeof DELIVERY_TYPES)[number];
 
   @Type(() => Number)
+  @IsNumber()
+  @Min(0)
   subtotal!: number;
 }
 

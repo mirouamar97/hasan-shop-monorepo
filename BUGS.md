@@ -1,6 +1,6 @@
 # HASAN SHOP — Bug Register (M3)
 
-**Last Updated**: 2026-07-11  
+**Last Updated**: 2026-07-12  
 **Severity**: Critical / High / Medium / Low  
 **Status**: Open / Fixed
 
@@ -11,10 +11,10 @@
 | Severity | Open | Fixed |
 |----------|------|-------|
 | Critical | 0 | 0 |
-| High | 0 | 9 |
-| Medium | 0 | 9 |
-| Low | 2 | 7 |
-| **Total** | **2** | **25** |
+| High | 0 | 10 |
+| Medium | 0 | 10 |
+| Low | 1 | 8 |
+| **Total** | **1** | **28** |
 
 ---
 
@@ -60,7 +60,7 @@
 
 ### BUG-010 — ESLint / NestJS DI type import conflicts
 - **Status**: Fixed  
-- **Result**: `@Inject()` on controllers; eslint `disallowTypeAnnotations: false` for API.
+- **Result**: `@Inject()` on controllers; Nest ESLint config disables `consistent-type-imports` so value imports required for DI are not auto-"fixed" to `import type` (which breaks bootstrap).
 
 ### BUG-014 — Local stack not verified
 - **Status**: Fixed  
@@ -146,10 +146,28 @@ Admin mutations in fulfillment, suppliers, inventory, and shipping controllers n
 | Field | Value |
 |-------|-------|
 | Severity | Low |
-| Component | `DrizzleShippingRepository` vs `ShippingService` |
-| Status | Open (by design) |
+| Component | `ShippingService` / checkout |
+| Status | Fixed |
 
-Checkout uses flat rates; admin quote uses carrier adapters. Prices may differ until unified.
+Checkout and admin quotes both go through `ShippingService.quote`: carrier adapter when available, flat 600/400 fallback on adapter failure, and shared `free_shipping_threshold` from settings.
+
+### BUG-037 — ESLint forces `import type` breaking Nest DI (regression)
+| Field | Value |
+|-------|-------|
+| Severity | High |
+| Component | `packages/config-eslint/nestjs.js`, API lint |
+| Status | Fixed |
+
+`consistent-type-imports` with `prefer: 'type-imports'` flagged Nest injectable constructor imports. Disabling the rule in Nest ESLint config preserves runtime DI metadata.
+
+### BUG-038 — DB/Redis down reported as opaque 500
+| Field | Value |
+|-------|-------|
+| Severity | Medium |
+| Component | `HttpExceptionFilter` |
+| Status | Fixed |
+
+Connection/refusal infrastructure failures now map to HTTP 503 `SERVICE_UNAVAILABLE` with a clearer message.
 
 ### BUG-034 — API dev startup fails (Nest DI type imports)
 | Field | Value |

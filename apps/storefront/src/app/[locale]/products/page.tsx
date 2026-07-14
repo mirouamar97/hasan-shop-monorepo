@@ -1,6 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 import { StoreShell } from '@/components/layout/store-shell';
-import { ProductCard, ProductGrid } from '@/components/commerce/product-card';
+import { ProductCard, ProductGridList } from '@/components/commerce/product-card';
 import { EmptyState } from '@/components/ui/section';
 import { fetchProducts, searchProducts } from '@/lib/api';
 import { Link } from '@/i18n/navigation';
@@ -55,18 +55,13 @@ export default async function ProductsPage({
           </div>
         ) : (
           <div className="mt-10">
-            <ProductGrid>
-              {data.items.map((product, i) => (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  locale={locale}
-                  currencyLabel={t('common.currency')}
-                  showAddToCart
-                  priority={i < 4}
-                />
-              ))}
-            </ProductGrid>
+            <ProductGridList
+              products={data.items}
+              locale={locale}
+              currencyLabel={t('common.currency')}
+              showAddToCart
+              priorityCount={4}
+            />
           </div>
         )}
       </div>

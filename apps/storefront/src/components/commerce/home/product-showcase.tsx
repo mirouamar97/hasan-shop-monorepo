@@ -1,6 +1,6 @@
 import { Link } from '@/i18n/navigation';
 import { ArrowRight } from 'lucide-react';
-import { ProductCard, ProductGrid } from '@/components/commerce/product-card';
+import { ProductGridList } from '@/components/commerce/product-card';
 import type { ProductListItem } from '@/lib/api';
 import { LinkButton } from '@/components/ui/link-button';
 
@@ -64,19 +64,14 @@ export function ProductShowcase({
         </div>
 
         {products.length > 0 ? (
-          <ProductGrid>
-            {products.map((product, i) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                locale={locale}
-                currencyLabel={currencyLabel}
-                showAddToCart
-                priority={i < priorityCount}
-                badge={badge}
-              />
-            ))}
-          </ProductGrid>
+          <ProductGridList
+            products={products}
+            locale={locale}
+            currencyLabel={currencyLabel}
+            showAddToCart
+            priorityCount={priorityCount}
+            badge={badge}
+          />
         ) : (
           <div className="rounded-[var(--radius-xl)] border border-dashed border-[var(--color-border)] bg-[var(--color-surface)] p-8 text-center">
             <p className="text-[var(--color-muted)]">{emptyLabel}</p>

@@ -77,8 +77,11 @@ export function SiteHeader({ categories }: SiteHeaderProps) {
             <Menu className="h-5 w-5" />
           </button>
 
-        <Link href="/" className="shrink-0 text-display text-xl tracking-tight">
-          {t('common.storeName')}
+        <Link href="/" className="shrink-0">
+          <span className="block text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--color-accent)]">
+            Algeria · COD
+          </span>
+          <span className="text-display text-2xl tracking-tight">{t('common.storeName')}</span>
         </Link>
 
         <div className="hidden flex-1 max-w-md lg:block">

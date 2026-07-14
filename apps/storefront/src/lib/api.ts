@@ -39,7 +39,15 @@ export async function apiFetch<T>(
       ...(IS_SERVER && isGet && revalidate !== false ? { next: { revalidate } } : {}),
     });
 
-    const body = (await res.json()) as ApiResponse<T> & { message?: string };
+    let body: (ApiResponse<T> & { message?: string }) | null = null;
+    try {
+      body = (await res.json()) as ApiResponse<T> & { message?: string };
+    } catch {
+      if (!res.ok) {
+        throw new Error(`API error ${res.status}`);
+      }
+      throw new Error('Invalid API response');
+    }
     if (!res.ok) {
       throw new Error(body.message ?? `API error ${res.status}`);
     }
@@ -196,6 +204,16 @@ export interface RecentlyViewedItem {
   productName?: string;
   productPrice?: string;
   imageUrl?: string;
+}
+
+export interface RecommendedProduct {
+  productId: string;
+  source: 'recently_viewed' | 'featured';
+  productSlug?: string;
+  productName?: string;
+  productPrice?: string;
+  imageUrl?: string | null;
+  viewedAt?: string;
 }
 
 export interface TrackOrderResult {
@@ -376,14 +394,23 @@ export async function getRelatedProducts(productId: string, locale: string) {
 }
 
 export async function getRecommendedProducts(locale: string) {
-  return apiFetch<
-    Array<
-      ProductListItem & {
-        source: 'recently_viewed' | 'featured';
-        viewedAt?: string;
-      }
-    >
-  >(`/engagement/products/recommended?locale=${locale}`);
+  return apiFetch<RecommendedProduct[]>(`/engagement/products/recommended?locale=${locale}`);
+}
+
+export function recommendedToListItem(r: RecommendedProduct): ProductListItem {
+  return {
+    id: r.productId,
+    sku: r.productId,
+    slug: r.productSlug ?? r.productId,
+    status: 'active',
+    price: r.productPrice ?? '0',
+    compareAtPrice: null,
+    name: r.productName ?? '',
+    shortDescription: null,
+    primaryImage: r.imageUrl
+      ? { url: r.imageUrl, altText: r.productName ?? null }
+      : null,
+  };
 }
 
 // Orders
@@ -412,4 +439,31 @@ export async function subscribeNewsletter(input: {
     body: JSON.stringify(input),
     revalidate: false,
   });
+}
+
+export interface PublicStoreSettings {
+  branding: {
+    storeName: string;
+    storeTagline?: string;
+    logoUrl?: string;
+    faviconUrl?: string;
+    primaryColor: string;
+    secondaryColor: string;
+    accentColor: string;
+  };
+  social: {
+    facebook?: string;
+    instagram?: string;
+    tiktok?: string;
+    twitter?: string;
+  };
+  seo: {
+    title: { ar: string; fr: string };
+    description: { ar: string; fr: string };
+    keywords: { ar: string; fr: string };
+  };
+}
+
+export async function getPublicSettings() {
+  return apiFetch<PublicStoreSettings>('/settings/public', { revalidate: 60 });
 }

@@ -23,4 +23,35 @@ export class StorefrontCheckoutPage {
     await expect(this.page.getByLabel('العنوان')).toBeVisible();
     await expect(this.submitButton).toBeVisible();
   }
+
+  async fillCodAddress(input: {
+    firstName: string;
+    lastName: string;
+    phone: string;
+    address: string;
+  }): Promise<void> {
+    await this.page.getByLabel('الاسم').fill(input.firstName);
+    await this.page.getByLabel('اللقب').fill(input.lastName);
+    await this.page.getByLabel('رقم الهاتف').fill(input.phone);
+    await this.page.getByLabel('العنوان').fill(input.address);
+
+    const wilaya = this.page.getByLabel('الولاية');
+    await wilaya.selectOption({ index: 1 });
+    await expect(this.page.getByLabel('البلدية').locator('option').nth(1)).toBeAttached({
+      timeout: 15_000,
+    });
+    await this.page.getByLabel('البلدية').selectOption({ index: 1 });
+  }
+
+  async submitOrder(): Promise<void> {
+    await this.submitButton.click();
+  }
+
+  async expectSuccess(): Promise<string> {
+    await this.page.waitForURL('**/checkout/success**', { timeout: 45_000 });
+    const orderNumber = new URL(this.page.url()).searchParams.get('orderNumber');
+    expect(orderNumber).toBeTruthy();
+    await expect(this.page.getByRole('heading', { level: 1 })).toBeVisible();
+    return orderNumber!;
+  }
 }
