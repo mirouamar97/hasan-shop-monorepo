@@ -8,9 +8,10 @@ type CategorySlug = { slug: string };
 
 async function fetchSlugs(): Promise<{ products: ProductSlug[]; categories: CategorySlug[] }> {
   try {
+    const signal = AbortSignal.timeout(5000);
     const [productsRes, categoriesRes] = await Promise.all([
-      fetch(`${API_URL}/api/v1/products?pageSize=500`, { next: { revalidate: 3600 } }),
-      fetch(`${API_URL}/api/v1/categories`, { next: { revalidate: 3600 } }),
+      fetch(`${API_URL}/api/v1/products?pageSize=500`, { signal, next: { revalidate: 3600 } }),
+      fetch(`${API_URL}/api/v1/categories`, { signal, next: { revalidate: 3600 } }),
     ]);
     const productsBody = productsRes.ok
       ? ((await productsRes.json()) as { data?: { items?: ProductSlug[] } })

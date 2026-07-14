@@ -12,15 +12,26 @@ async function runMigrations() {
   const connectionString =
     process.env.DATABASE_URL ?? 'postgresql://hasan_shop:hasan_shop_dev@localhost:5433/hasan_shop';
 
-  const migrationClient = postgres(connectionString, { max: 1 });
+  const needsSsl =
+    /sslmode=require/i.test(connectionString) ||
+    /render\.com/i.test(connectionString) ||
+    process.env.DATABASE_SSL === 'true';
+
+  console.log(
+    'Running database migrations against',
+    connectionString.replace(/:[^:@/]+@/, ':***@'),
+  );
+
+  // Phase 1 — all migrations except 0005 (enum ADD VALUE must commit alone)
+  const migrationClient = postgres(connectionString, {
+    max: 1,
+    ...(needsSsl ? { ssl: 'require' as const } : {}),
+  });
   const db = drizzle(migrationClient);
-
-  console.log('Running database migrations...');
-
   await migrate(db, { migrationsFolder: path.join(__dirname, '..', 'drizzle') });
+  await migrationClient.end();
 
   console.log('Migrations completed successfully.');
-  await migrationClient.end();
 }
 
 runMigrations().catch((error) => {
